@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
 <meta charset="UTF-8">
-<title>Novo tópico</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfil</title>
 <link rel="stylesheet" href="./css/css.css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -19,36 +20,30 @@
 	href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
 	rel="stylesheet">
 </head>
-<body class='p-3'>
+<body class="p-3">
 
 	<%
 	request.setCharacterEncoding("UTF-8");
+	int idUsuario = -1;
 
 	if (request.getSession().getAttribute("idUsuario") == null) {
 		response.sendRedirect("./login.jsp");
+	} else {
+		idUsuario = (int) request.getSession().getAttribute("idUsuario");
 	}
-
-	String idPublicacao = (String) request.getParameter("idPublicacao");
 	%>
-
-	<script>
-		const idPublicacao =
-	<%=idPublicacao%>
-		
-	</script>
 
 	<div
 		class="bg-black bg-gradient text-white p-3 rounded-3 d-flex justify-content-between align-items-center">
 		<div class="d-flex align-items-center">
 			<button type="submit"
 				class="bg-dark bg-gradient rounded-2 text-white border border-secondary border-opacity-50"
-				id='voltar'>
-				<i class="bi bi-arrow-left px-2 fs-4"></i>
+				onclick="window.location.href = 'foruns.jsp'">
+				<i class="bi bi-house px-2 fs-4"></i>
 			</button>
+
 		</div>
-		<h5
-			class="m-0 position-absolute start-50 translate-middle-x text-nowrap"
-			id='h5'></h5>
+		<h5 class="m-0 position-absolute start-50 translate-middle-x" id='h5'>Perfil</h5>
 
 		<div class="ms-auto d-flex flex-column text-end text-black">
 			<span>­</span> <span>­</span>
@@ -62,21 +57,47 @@
 				<i class="bi bi-list px-2 fs-4"></i>
 			</button>
 		</div>
-
 	</div>
 
-	<div
-		class='d-flex flex-column justify-content-center align-items-center m-0 p-3 w-100'>
+	<div class="d-flex mt-3">
+		<div class="card ratio ratio-1x1" style="max-width: 15vw;">
+			<div class="card-body d-flex justify-content-center align-items-center">
+				<i class='bi-image'></i>
+			</div>
+		</div>
 
-		<form class='w-75 bg-dark-subtle py-3 px-4 rounded-3 shadow'>
-			<label for="texto" class='fs-5 mb-1'>Texto: </label>
-			<textarea name="texto" rows="21" maxlength="2000" required
-				class='w-100 lh-1 rounded-3 p-2 border border-dark border-opacity-25 texto'
-				placeholder='Máximo: 2000 caracteres' id='textoAtual'></textarea>
-			<input type="submit" name="submit" value="Editar"
-				class='rounded-3 py-1 px-3 border border-dark border-opacity-25 mt-1 bg-secondary-subtle fs-5 editarPublicacaoButton'>
-		</form>
-
+		<div class="d-flex flex-column justify-content-between p-3 w-100">
+		
+			<div class='d-flex justify-content-between w-50'>
+				<div class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
+					<span class='mx-2 fw-bold'>Nome:
+					<span id='nome' class='fw-bolder'></span></span>
+				</div>
+				<span class='form-editar editarUsername'>
+					<button type="submit" class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
+						<i class="bi bi-pencil fs-5 px-1"></i>
+					</button>
+				</span>
+			</div>
+			
+			<div class='d-flex justify-content-between w-50'>
+				<div class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
+					<span class='mx-2 fw-bold'>Nome de usuário:
+					<span id='username' class='fw-bolder'></span></span>
+				</div>
+				<span class='form-editar editarUsername'>
+					<button type="submit" class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
+						<i class="bi bi-pencil fs-5 px-1"></i>
+					</button>
+				</span>
+			</div>
+			
+			<div class='bg-secondary-subtle w-50 rounded-pill p-2 d-flex justify-content-between'>
+				<span class='mx-2 fw-bold'>Entrou em:
+				<span id='data' class='fw-bolder'></span></span>
+			</div>
+			
+		</div>
 	</div>
 
 	<div class="offcanvas offcanvas-end " tabindex="-1" id="offcanvasRight"
@@ -89,19 +110,19 @@
 		<div class="offcanvas-body">
 			<p>Selecione uma opção:</p>
 			<ul class="list-group">
-				<li class="list-group-item"><a href="#">Perfil</a></li>
+				<li class="list-group-item"><a href="perfil.jsp">Perfil</a></li>
 				<li class="list-group-item"><a href="#">Configurações</a></li>
 				<li class="list-group-item"><a href="#">Ajuda</a></li>
 				<li class="list-group-item"><a href="login.jsp">Sair</a></li>
 			</ul>
 		</div>
 	</div>
-
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<script src="./scripts/editarPublicacao.js"></script>
+	<script src="./scripts/perfil.js"></script>
+
 </body>
 </html>

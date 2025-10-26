@@ -9,6 +9,7 @@ public class Comentario {
 	private String texto;
 	private int numCurtidas;
 	private Timestamp data;
+	private String username;
 	public int getIdComentario() {
 		return idComentario;
 	}
@@ -44,6 +45,12 @@ public class Comentario {
 	}
 	public void setData(Timestamp data) {
 		this.data = data;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	

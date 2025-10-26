@@ -9,6 +9,7 @@ public class Topico {
     private Timestamp data;
     private int idForum;
     private int idUsuario;
+    private String username;
 	
     public int getIdTopico() {
 		return idTopico;
@@ -40,5 +41,12 @@ public class Topico {
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 }
 

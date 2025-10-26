@@ -10,8 +10,10 @@ public class Publicacao {
 	private int numLikes;
 	private int numSalvamentos;
 	private int numComentarios;
-	private Timestamp data;
+	private String data;
 	private int idUsuario;
+	private String username;
+	
 	public int getIdPublicacao() {
 		return idPublicacao;
 	}
@@ -48,10 +50,10 @@ public class Publicacao {
 	public void setNumComentarios(int numComentarios) {
 		this.numComentarios = numComentarios;
 	}
-	public Timestamp getData() {
+	public String getData() {
 		return data;
 	}
-	public void setData(Timestamp data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 	public int getIdUsuario() {
@@ -60,6 +62,13 @@ public class Publicacao {
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 	
 	
 }
