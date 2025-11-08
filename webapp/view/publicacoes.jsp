@@ -74,15 +74,16 @@
 			</div>
 		</template>
 
-		<h5 class='m-0 position-absolute start-50 translate-middle-x w-75 fw-medium h5Header'></h5>
-		
+		<h5
+			class='m-0 position-absolute start-50 translate-middle-x w-75 fw-medium h5Header'></h5>
+
 	</div>
 
 	<template id='publicacao-template'>
 		<div class='my-5 w-75 shadow rounded-3 publicacao'>
 
 			<div
-				class=' p-3 m-0 bg-secondary text-white rounded-3 rounded-bottom-0 fs-3 d-flex justify-content-between align-items-center headerPublicacao'>
+				class=' p-3 m-0 bg-dark bg-gradient text-white rounded-3 rounded-bottom-0 fs-3 d-flex justify-content-between align-items-center headerPublicacao'>
 				<span class='span-publicacao-autor'></span> <span
 					class='fw-normal m-0 flex-grow-1 ms-5 float-end span-publicacao-data fs-6'></span>
 			</div>
@@ -90,7 +91,9 @@
 			<h5
 				class='p-3 m-0 bg-dark-subtle fw-normal py-4 text-break publicacao-texto'></h5>
 
-			<div class='comentariosDiv'></div>
+			<div class='bg-body-secondary p-3'>Comentários:</div>
+			
+			<div class='comentariosDiv p-1 bg-body-secondary'></div>
 
 			<div class='adicionarComentario d-flex align-items-stretch w-100'>
 				<form class='d-flex w-100 adicionarComentarioForm'>
@@ -112,15 +115,26 @@
 			<h6
 				class='comentarioConteudo text-break fw-normal w-100 p-3 m-0 bg-body-tertiary border-top border-start border-bottom border-black border-opacity-10 d-flex justify-content-between align-items-center'></h6>
 			<h6
-				class='comentarioData fw-normal m-0 p-2 bg-body-tertiary border-top border-end border-bottom border-black border-opacity-10 text-nowrap fs-6'></h6>
+				class='comentarioData fw-light m-0 p-2 bg-body-tertiary border-top border-end border-bottom border-black border-opacity-10 text-nowrap fs-6 text-secondary'></h6>
+		</div>
+	</template>
+
+	<template id='curtirComentarioTemplate'>
+		<div
+			class='d-flex border-top border-bottom border-black border-opacity-10 curtirComentario'>
+			<button type="submit"
+				class="d-flex px-3 forumBtn fs-6 h-100 align-items-center curtirComentarioButton w-100">
+				<span class="numLikes fs-5 mb-1 pe-1">0</span> <i
+					class="bi bi-heart fs-5"></i>
+			</button>
 		</div>
 	</template>
 
 	<template id='excluirComentarioTemplate'>
 		<div
-			class='d-flex bg-secondary-subtle border border-black border-opacity-10 excluirComentario'>
+			class='d-flex border-top border-bottom border-black border-opacity-10 excluirComentario'>
 			<button type='submit'
-				class='px-3 forumBtn fs-6 h-100 bg-secondary-subtle excluirComentarioButton'>
+				class='px-3 forumBtn fs-6 h-100 excluirComentarioButton'>
 				<i class='bi bi-trash fs-5'></i>
 			</button>
 		</div>
@@ -129,25 +143,25 @@
 	<template id='acoesPublicacaoTemplate'>
 		<div class='excluirPublicacao'>
 			<button type='submit'
-				class='p-2 border border-dark border-opacity-25 forumBtn rounded-start-pill fs-6 bg-dark-subtle excluirPublicacaoButton ms-2'>
+				class='p-2 border border-dark border-opacity-25 rounded-start-pill fs-6 bg-dark-subtle excluirPublicacaoButton ms-2'>
 				<i class='bi bi-trash fs-5 px-1'></i>
 			</button>
 		</div>
 
 		<div class='editarPublicacao'>
 			<button type='submit'
-				class='p-2 border border-dark border-opacity-25 forumBtn rounded-end-pill fs-6 bg-dark-subtle editarPublicacaoButton'>
+				class='p-2 border border-dark border-opacity-25 rounded-end-pill fs-6 bg-dark-subtle editarPublicacaoButton'>
 				<i class='bi bi-pencil fs-5 px-1'></i>
 			</button>
 		</div>
 	</template>
-	
+
 	<template id='curtirPublicacaoTemplate'>
 		<div class='curtirPublicacao'>
-		<span class='numLikes fs-5 me-1'></span>
 			<button type='submit'
-				class='p-2 border border-dark border-opacity-25 forumBtn rounded-pill fs-6 bg-dark-subtle curtirPublicacaoButton'>
-				<i class='bi bi-heart fs-5 px-1'></i>
+				class='p-2 border border-dark border-opacity-25 rounded-pill fs-6 bg-dark-subtle curtirPublicacaoButton'>
+				<span class='numLikes fs-5 px-1'></span> <i
+					class='bi bi-heart fs-5 pe-1'></i>
 			</button>
 		</div>
 	</template>
@@ -155,14 +169,14 @@
 	<template id='acoesTopicoTemplate'>
 		<div class='excluirTopico d-flex align-items-stretch'>
 			<button type='submit'
-				class='p-1 border border-dark border-opacity-25 forumBtn rounded-start-pill fs-6 bg-dark-subtle excluirTopicoButton'>
+				class='p-1 border border-dark border-opacity-25 rounded-start-pill fs-6 bg-dark-subtle excluirTopicoButton'>
 				<i class='bi bi-trash fs-6 px-1'></i>
 			</button>
 		</div>
 
 		<div class='editarTopico d-flex align-items-stretch'>
 			<button type='submit'
-				class='p-1 border border-dark border-opacity-25 forumBtn rounded-end-pill fs-6 bg-dark-subtle editarTopicoButton'>
+				class='p-1 border border-dark border-opacity-25 rounded-end-pill fs-6 bg-dark-subtle editarTopicoButton'>
 				<i class='bi bi-pencil fs-6 px-1'></i>
 			</button>
 		</div>

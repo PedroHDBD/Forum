@@ -37,7 +37,7 @@ public class UsuarioControl extends HttpServlet {
             return;
         }
 
-        DBQuery dbQuery = new DBQuery("usuario", "nome, username", "idUsuario");
+        DBQuery dbQuery = new DBQuery("Usuario", "nome, username", "idUsuario");
         ResultSet resultSet = dbQuery.select("idUsuario = " + idUsuario);
 
         Usuario usuario = new Usuario();

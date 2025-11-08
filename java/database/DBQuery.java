@@ -83,14 +83,12 @@ public class DBQuery {
 	public ResultSet select(String where) {
 		String sql = "SELECT "+  this.joinElements(this.fieldsName, ", ") + " FROM " + this.tableName;
 		sql += (( where!="") ? " WHERE "+ where : "" );
-		System.out.print(sql);
 		return this.query(sql);
 	}
 	
 	public int insert(String[] values) {
 	    if (values.length == this.fieldsName.length) {
 	        String sql = "INSERT INTO " + this.tableName + " ( " + this.joinElements(this.fieldsName, ", ") + " ) VALUES ('" + joinElements(values, "','") + "')";
-	        System.out.print(sql);
 	        
 	        return this.executeAndGetGeneratedKeys(sql);
 	    } else {
@@ -116,6 +114,11 @@ public class DBQuery {
 	    return 0;
 	}	
 	
+	public int delete(String where) {
+	    String sql = "DELETE FROM " + this.tableName + " WHERE " + where;
+	    return this.execute(sql);
+	}
+	
 	public int delete(String[] values) {
 		if (values.length != this.fieldsName.length){
 			System.out.println("\n A quantidade de campos � diferente da quantidade de valores!");
@@ -127,7 +130,6 @@ public class DBQuery {
 			return(0);
 		}
 		sql += "\n WHERE "+ this.fieldKey +" = '"+ values[this.keyFieldIndex] +"'";
-		System.out.print( sql );
 		return ( this.execute(sql) );
 	}
 	
@@ -148,21 +150,18 @@ public class DBQuery {
 			return(0);
 		}
 		sql += "\n WHERE "+ this.fieldKey +" = '"+ values[this.keyFieldIndex] +"'";
-		System.out.print( sql );
 		return ( this.execute(sql) );
 	}
 	
-	public int incrementPublicacao(String idPublicacao, String campo) {
-	    String sql = "\nUPDATE Publicacao SET " + campo +" = " + campo + " + 1";
-	    sql += "\n WHERE idPublicacao = '" + idPublicacao + "'";
-	    System.out.println(sql);
+	public int increment(String tabela, String nomeId, String Id, String campo) {
+	    String sql = "UPDATE " + tabela + " SET " + campo + " = " + campo + " + 1";
+	    sql += " WHERE " + nomeId + " = '" + Id + "'";
 	    return this.execute(sql);
 	}
-	
-	public int decrementPublicacao(String idPublicacao, String campo) {
-	    String sql = "\nUPDATE Publicacao SET " + campo +" = " + campo + " - 1";
-	    sql += "\n WHERE idPublicacao = '" + idPublicacao + "'";
-	    System.out.println(sql);
+
+	public int decrement(String tabela, String nomeId, String Id, String campo) {
+	    String sql = "UPDATE " + tabela + " SET " + campo + " = " + campo + " - 1";
+	    sql += " WHERE " + nomeId + " = '" + Id + "'";
 	    return this.execute(sql);
 	}
 

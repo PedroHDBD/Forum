@@ -99,11 +99,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 					$header.append($excluirTopico);
 					$header.append($editarTopico);
-
-					// Offcanvas
-					const offcanvasTemplate = document.querySelector("#canvas-template").content.cloneNode(true);
-					$header.append(offcanvasTemplate);
 				}
+
+				const offcanvasTemplate = document.querySelector("#canvas-template").content.cloneNode(true);
+				$header.append(offcanvasTemplate);
+
 			}
 		});
 
@@ -143,15 +143,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
 					const $curtirPublicacaoClone = $(curtirPublicacaoTemplate.cloneNode(true));
 					const $curtirPublicacao = $curtirPublicacaoClone.find(".curtirPublicacaoButton");
 					const numLikesSpan = $curtirPublicacaoClone.find(".numLikes");
+					const $icone = $curtirPublicacao.find("i");
 
 					numLikesSpan.text(publicacao.numLikes);
 
-					// Evento de curtir
+					$.ajax({
+						url: "/ProjetoTCC/api/LikeControl",
+						type: "GET",
+						dataType: "json",
+						data: { 
+							id: publicacao.idPublicacao,
+							idNome: "idPublicacao",
+							tabela: "LikePubli"
+						},
+						success: function(response) {
+							if (response && response.curtido === true) {
+								$icone.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+							}
+						},
+						error: function(err) {
+							console.warn("GET LikeControl falhou para", idPublicacaoFechada, err);
+						}
+					});
+
 					$curtirPublicacao.on("click", function() {
-						const $botao = $(this);
-						const $publicacao = $botao.closest(".publicacao");
-						const $icone = $botao.find("i");
-						const idPublicacao = $publicacao.find(".adicionarComentarioForm").data("id-publicacao");
 
 						if ($icone.hasClass("bi-heart")) {
 							$.ajax({
@@ -159,7 +174,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 								type: "POST",
 								data: {
 									acao: "adicionarLike",
-									idPublicacao: idPublicacao
+									idPublicacao: publicacao.idPublicacao
 								},
 								success: function() {
 									$icone.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
@@ -167,14 +182,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 									numLikesSpan.text(publicacao.numLikes);
 								}
 							});
-						} 
-						if ($icone.hasClass("bi-heart-fill")) {
+						} else {
 							$.ajax({
 								url: "/ProjetoTCC/api/LikeControl",
 								type: "POST",
 								data: {
 									acao: "removerLike",
-									idPublicacao: idPublicacao
+									idPublicacao: publicacao.idPublicacao
 								},
 								success: function() {
 									$icone.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
@@ -184,7 +198,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 							})
 						}
 					});
-					
+
 					$publicacao.find(".headerPublicacao").append($curtirPublicacaoClone);
 
 					//////// BOTÕES DE AÇÃO DA PUBLICAÇÃO (EDITAR/EXCLUIR) ////////
@@ -249,8 +263,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 									$comentario.find('.comentarioConteudo').html("<div><span class='fw-bolder pe-1'>" + comentario.username + ": </span> " + comentario.texto + "</div>");
 									$comentario.find('.comentarioData').text(dataComentarioFormatada);
 
-									$publicacao.find(".comentariosDiv").append($comentario);
-
 									// Botão excluir comentário
 									if (comentario.idUsuario == idUsuario) {
 										const excluirComentarioTemplate = document.querySelector("#excluirComentarioTemplate").content;
@@ -260,6 +272,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
 										$excluirComentario.find(".excluirComentarioButton").data("id-comentario", comentario.idComentario);
 										$comentario.append($excluirComentario);
 									}
+
+									// Botão curtir comentário
+									const curtirComentarioTemplate = document.querySelector("#curtirComentarioTemplate").content;
+									const $curtirComentarioClone = curtirComentarioTemplate.cloneNode(true);
+									const $curtirComentario = $($curtirComentarioClone).find(".curtirComentario");
+									$curtirComentario.find(".curtirComentarioButton").data("id-comentario", comentario.idComentario);
+									$comentario.append($curtirComentario);
+
+									$publicacao.find(".comentariosDiv").append($comentario);
 								});
 							}
 						});
@@ -277,9 +298,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
 		const $botao = $(this);
 		const idComentario = $botao.data("id-comentario");
 
+		const idPublicacao = $botao.closest(".publicacao").find(".adicionarComentarioForm").data("id-publicacao");
+
 		if (confirm("Tem certeza que deseja excluir este comentário?")) {
 			$.ajax({
-				url: '/ProjetoTCC/api/ComentarioControl?idComentario=' + idComentario,
+				url: '/ProjetoTCC/api/ComentarioControl?idComentario=' + idComentario + '&idPublicacao=' + idPublicacao,
 				type: 'DELETE',
 				success: function() {
 					$botao.closest(".comentario").remove();

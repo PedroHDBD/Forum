@@ -59,7 +59,6 @@ public class PublicacaoControl extends HttpServlet {
 					publicacao.setNumSalvamentos(resultSet.getInt("numSalvamentos"));
 					publicacao.setTexto(resultSet.getString("texto"));
 					publicacao.setUsername(resultSet.getString("username"));
-					System.out.println("\n\n" + publicacao.getData());
 					publicacoes.add(publicacao);
 				}
 			} catch (SQLException e) {

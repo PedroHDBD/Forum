@@ -72,11 +72,14 @@ public class ComentarioControl extends HttpServlet {
 		}
 
 		String idComentario = request.getParameter("idComentario");
+		String idPublicacao = request.getParameter("idPublicacao");
 
 		DBQuery dbQuery = new DBQuery("Comentario", "idComentario", "idComentario");
 		String[] comentario = { idComentario };
 		dbQuery.delete(comentario);
 
+		dbQuery.decrement("Publicacao", "idPublicacao", idPublicacao, "numComentarios");
+		
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().write("{}");
 
@@ -112,7 +115,7 @@ public class ComentarioControl extends HttpServlet {
 		String[] comentario = { String.valueOf(idPublicacao), texto, String.valueOf(idUsuario), username };
 		dbquery.insert(comentario);
 
-		dbquery.incrementPublicacao(idPublicacao, "numComentarios");
+		dbquery.increment("Publicacao", "idPublicacao", idPublicacao, "numComentarios");
 
 		Gson gson = new Gson();
 		String json = gson.toJson(comentario);

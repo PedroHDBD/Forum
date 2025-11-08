@@ -80,7 +80,6 @@ public class Control extends HttpServlet {
 				topico.setData(resultSet.getTimestamp("data"));
 				topico.setIdUsuario(resultSet.getInt("idUsuario"));
 				topico.setUsername(resultSet.getString("username"));
-				System.out.println("\n\n\n" + topico.getTitulo());
 
 				topicos.add(topico);
 			}
