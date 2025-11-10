@@ -48,7 +48,7 @@ public class ComentarioControl extends HttpServlet {
 				comentario.setTexto(resultSet.getString("texto"));
 				comentario.setData(resultSet.getTimestamp("data"));
 				comentario.setIdUsuario(resultSet.getInt("idUsuario"));
-				comentario.setNumCurtidas(resultSet.getInt("numCurtidas"));
+				comentario.setNumLikes(resultSet.getInt("numCurtidas"));
 				comentario.setUsername(resultSet.getString("username"));
 				comentarios.add(comentario);
 			}

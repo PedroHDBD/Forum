@@ -17,87 +17,86 @@ import database.DBQuery;
 
 @WebServlet("/api/LikeControl")
 public class LikeControl extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public LikeControl() {
-        super();
-    }
+	public LikeControl() {
+		super();
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 
-        String acao = request.getParameter("acao");
-        int idUsuario = (int) request.getSession().getAttribute("idUsuario");
-        String idPublicacao = request.getParameter("idPublicacao");
+		String acao = request.getParameter("acao");
+		int idUsuario = (int) request.getSession().getAttribute("idUsuario");
+		String idPublicacao = request.getParameter("idPublicacao");
 
-        DBQuery dbQuery = new DBQuery("LikePubli", "idUsuario, idPublicacao", "");
+		DBQuery dbQuery = new DBQuery("LikePubli", "idUsuario, idPublicacao", "");
 
-        try {
+		try {
 
-            if ("adicionarLike".equals(acao)) {
+			if ("adicionarLike".equals(acao)) {
+				ResultSet rsCheck = dbQuery.select("idUsuario = " + idUsuario + " AND idPublicacao = " + idPublicacao);
 
-                ResultSet rsCheck = dbQuery.select(
-                        "idUsuario = " + idUsuario + " AND idPublicacao = " + idPublicacao);
+				if (!rsCheck.next()) {
+					String[] like = { String.valueOf(idUsuario), idPublicacao };
+					dbQuery.insert(like);
+					dbQuery.increment("Publicacao", "idPublicacao", idPublicacao, "numLikes");
 
-                if (!rsCheck.next()) {
-                    String[] like = { String.valueOf(idUsuario), idPublicacao };
-                    dbQuery.insert(like);
-                    dbQuery.increment("Publicacao", "idPublicacao", idPublicacao, "numLikes");
-                }
+				}
 
-                response.setStatus(HttpServletResponse.SC_OK);
-            }
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
 
-            if ("removerLike".equals(acao)) {
+			if ("removerLike".equals(acao)) {
 
-                dbQuery.delete("idUsuario = " + idUsuario + " AND idPublicacao = " + idPublicacao);
+				dbQuery.delete("idUsuario = " + idUsuario + " AND idPublicacao = " + idPublicacao);
 
-                dbQuery.decrement("Publicacao", "idPublicacao", idPublicacao, "numLikes");
+				dbQuery.decrement("Publicacao", "idPublicacao", idPublicacao, "numLikes");
 
-                response.setStatus(HttpServletResponse.SC_OK);
-            }
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json;charset=UTF-8");
 
-        int idUsuario = (int) request.getSession().getAttribute("idUsuario");
-        
-        String id = request.getParameter("id");
-        String idNome = request.getParameter("idNome");
-        String tabela = request.getParameter("tabela");
-        
-        if (!tabela.equals("LikePubli") && !tabela.equals("LikeComentario")) {
-            response.sendError(400, "Tabela inválida.");
-            return;
-        }
+		int idUsuario = (int) request.getSession().getAttribute("idUsuario");
 
-        DBQuery dbQuery = new DBQuery(tabela, "idUsuario, " + idNome, "");
+		String id = request.getParameter("id");
+		String idNome = request.getParameter("idNome");
+		String tabela = request.getParameter("tabela");
 
-        boolean curtiu = false;
+		if (!tabela.equals("LikePubli") && !tabela.equals("LikeComentario")) {
+			response.sendError(400, "Tabela inválida.");
+			return;
+		}
 
-        try {
-            ResultSet rs = dbQuery.select("idUsuario = " + idUsuario + " AND " + idNome + " = " + id);
+		DBQuery dbQuery = new DBQuery(tabela, "idUsuario, " + idNome, "");
 
-            curtiu = rs.next();
-            rs.close();
+		boolean curtiu = false;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try {
+			ResultSet rs = dbQuery.select("idUsuario = " + idUsuario + " AND " + idNome + " = " + id);
 
-        response.getWriter().write(new Gson().toJson(Map.of("curtido", curtiu)));
-    }
+			curtiu = rs.next();
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		response.getWriter().write(new Gson().toJson(Map.of("curtido", curtiu)));
+	}
 }

@@ -7,7 +7,7 @@ public class Comentario {
 	private int idUsuario;
 	private int idPublicacao;
 	private String texto;
-	private int numCurtidas;
+	private int numLikes;
 	private Timestamp data;
 	private String username;
 	public int getIdComentario() {
@@ -34,11 +34,11 @@ public class Comentario {
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
-	public int getNumCurtidas() {
-		return numCurtidas;
+	public int getNumLikes() {
+		return numLikes;
 	}
-	public void setNumCurtidas(int numCurtidas) {
-		this.numCurtidas = numCurtidas;
+	public void setNumLikes(int numLikes) {
+		this.numLikes = numLikes;
 	}
 	public Timestamp getData() {
 		return data;

@@ -70,7 +70,6 @@ public class PublicacaoControl extends HttpServlet {
 		}
 
 		if ("BuscarTextoPublicacao".equals(acao)) {
-
 			String idPublicacao = request.getParameter("idPublicacao");
 
 			DBQuery dbQuery = new DBQuery("Publicacao", "texto", "idPublicacao");
@@ -80,6 +79,25 @@ public class PublicacaoControl extends HttpServlet {
 				while (resultSet.next()) {
 					Publicacao publicacao = new Publicacao();
 					publicacao.setTexto(resultSet.getString("texto"));
+
+					String json = new Gson().toJson(publicacao);
+					response.getWriter().write(json);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if ("BuscarNumLikes".equals(acao)) {
+			String idPublicacao = request.getParameter("idPublicacao");
+			
+			DBQuery dbQuery = new DBQuery("Publicacao", "numLikes", "idPublicacao");
+			ResultSet resultSet = dbQuery.select("idPublicacao = " + idPublicacao);
+
+			try {
+				while (resultSet.next()) {
+					Publicacao publicacao = new Publicacao();
+					publicacao.setNumLikes(resultSet.getInt("numLikes"));
 
 					String json = new Gson().toJson(publicacao);
 					response.getWriter().write(json);
