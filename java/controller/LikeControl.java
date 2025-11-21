@@ -31,19 +31,23 @@ public class LikeControl extends HttpServlet {
 
 		String acao = request.getParameter("acao");
 		int idUsuario = (int) request.getSession().getAttribute("idUsuario");
-		String idPublicacao = request.getParameter("idPublicacao");
-
-		DBQuery dbQuery = new DBQuery("LikePubli", "idUsuario, idPublicacao", "");
 
 		try {
 
 			if ("adicionarLike".equals(acao)) {
-				ResultSet rsCheck = dbQuery.select("idUsuario = " + idUsuario + " AND idPublicacao = " + idPublicacao);
+				String id = request.getParameter("id");
+				String idNome = request.getParameter("idNome");
+				String tabelaLike = request.getParameter("tabelaLike");
+				String tabelaParent = request.getParameter("tabelaParent");
+				
+				DBQuery dbQuery = new DBQuery(tabelaLike, "idUsuario, " + idNome , "");
+
+				ResultSet rsCheck = dbQuery.select("idUsuario = " + idUsuario + " AND " + idNome + " = " + id);
 
 				if (!rsCheck.next()) {
-					String[] like = { String.valueOf(idUsuario), idPublicacao };
+					String[] like = { String.valueOf(idUsuario), id };
 					dbQuery.insert(like);
-					dbQuery.increment("Publicacao", "idPublicacao", idPublicacao, "numLikes");
+					dbQuery.increment(tabelaParent, idNome, id, "numLikes");
 
 				}
 
@@ -51,10 +55,16 @@ public class LikeControl extends HttpServlet {
 			}
 
 			if ("removerLike".equals(acao)) {
+				String id = request.getParameter("id");
+				String idNome = request.getParameter("idNome");
+				String tabelaLike = request.getParameter("tabelaLike");
+				String tabelaParent = request.getParameter("tabelaParent");
+				
+				DBQuery dbQuery = new DBQuery(tabelaLike, "idUsuario, " + idNome , "");
 
-				dbQuery.delete("idUsuario = " + idUsuario + " AND idPublicacao = " + idPublicacao);
+				dbQuery.delete("idUsuario = " + idUsuario + " AND " + idNome + " = " + id);
 
-				dbQuery.decrement("Publicacao", "idPublicacao", idPublicacao, "numLikes");
+				dbQuery.decrement(tabelaParent, idNome, id, "numLikes");
 
 				response.setStatus(HttpServletResponse.SC_OK);
 			}
@@ -78,7 +88,7 @@ public class LikeControl extends HttpServlet {
 		String idNome = request.getParameter("idNome");
 		String tabela = request.getParameter("tabela");
 
-		if (!tabela.equals("LikePubli") && !tabela.equals("LikeComentario")) {
+		if (!tabela.equals("LikePubli") && !tabela.equals("LikeComent")) {
 			response.sendError(400, "Tabela inválida.");
 			return;
 		}

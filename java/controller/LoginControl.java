@@ -32,16 +32,18 @@ public class LoginControl extends HttpServlet {
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
 
-		DBQuery dbQuery = new DBQuery("usuario", "idUsuario, senha", "idUsuario");
+		DBQuery dbQuery = new DBQuery("usuario", "idUsuario, senha, username", "idUsuario");
 		ResultSet rs = dbQuery.select("email = '" + email + "'");
 
 		try {
 			if (rs.next()) {
 				int idUsuario = rs.getInt("idUsuario");
-				String senhaHash = rs.getString("senha");
+			    String username = rs.getString("username");
+			    String senhaHash = rs.getString("senha");
 
 				if (BCrypt.checkpw(senha, senhaHash)) {
 				    request.getSession().setAttribute("idUsuario", idUsuario);
+				    request.getSession().setAttribute("username", username);
 				    response.sendRedirect(request.getContextPath() + "/view/foruns.jsp");
 				} else {
 				    request.setAttribute("erroSenha", "Senha incorreta");

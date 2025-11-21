@@ -55,8 +55,10 @@ public class CadastroControl extends HttpServlet {
 		    
 			String senhaHash = BCrypt.hashpw(senha, BCrypt.gensalt());
 
-			String[] usuario = { nome, email, senhaHash, username };
-			dbQuery = new DBQuery("usuario", "nome, email, senha, username", "idUsuario");
+			String imagem = "uploads/usuarios/profile.png";
+			
+			String[] usuario = { nome, email, senhaHash, username, imagem};
+			dbQuery = new DBQuery("usuario", "nome, email, senha, username, imagem", "idUsuario");
 			dbQuery.insert(usuario);
 
 			dbQuery = new DBQuery("usuario", "idUsuario, nome, email, senha, username", "idUsuario");

@@ -107,20 +107,20 @@
 		</div>
 	</template>
 
-	<div class="offcanvas offcanvas-end " tabindex="-1" id="offcanvasRight"
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
 		<div class="offcanvas-header">
-			<h5 id="offcanvasRightLabel">Utilitários</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
 				aria-label="Fechar"></button>
 		</div>
-		<div class="offcanvas-body">
-			<p>Selecione uma opção:</p>
-			<ul class="list-group">
-				<li class="list-group-item"><a href="perfil.jsp">Perfil</a></li>
-				<li class="list-group-item"><a href="#">Configurações</a></li>
-				<li class="list-group-item"><a href="#">Ajuda</a></li>
-				<li class="list-group-item"><a href="login.jsp">Sair</a></li>
+		<div class="offcanvas-body ">
+			<ul class="list-group d-flex align-items-center">
+				<li class="list-group-item bg-secondary-subtle my-2 p-0 rounded-5 w-75 mx-auto d-flex align-items-center shadow border border-dark border-opacity-25 justify-content-center">
+					<a href="perfil.jsp" class="text-reset text-decoration-none w-100 text-center p-2">Perfil</a>
+				</li>
+				<li class="list-group-item bg-secondary-subtle my-2 p-0 rounded-5 w-75 mx-auto d-flex align-items-center shadow border border-dark border-opacity-25 justify-content-center">
+					<a href="login.jsp" class="text-reset text-decoration-none w-100 text-center p-2">Sair</a>
+				</li>
 			</ul>
 		</div>
 	</div>

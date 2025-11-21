@@ -12,7 +12,17 @@ public class Publicacao {
 	private int numComentarios;
 	private String data;
 	private int idUsuario;
-	private String username;
+	private String imagem;
+	private Usuario usuario;
+
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public int getIdPublicacao() {
 		return idPublicacao;
@@ -78,12 +88,14 @@ public class Publicacao {
 		this.idUsuario = idUsuario;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getImagem() {
+		return imagem;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}
+	
+	
 
 }

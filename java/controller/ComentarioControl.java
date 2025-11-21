@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import database.DBQuery;
 import model.Comentario;
+import model.Publicacao;
 
 @WebServlet("/api/ComentarioControl")
 public class ComentarioControl extends HttpServlet {
@@ -35,29 +36,54 @@ public class ComentarioControl extends HttpServlet {
 			return;
 		}
 
-		List<Comentario> comentarios = new ArrayList<>();
-		String idPublicacao = request.getParameter("idPublicacao");
-		DBQuery dbQuery = new DBQuery("Comentario", "idComentario, idPublicacao, idUsuario, texto, data, numCurtidas, username", "idComentario");
-		ResultSet resultSet = dbQuery.select("idPublicacao = " + idPublicacao);
+		String acao = request.getParameter("acao");
 
-		try {
-			while (resultSet.next()) {
-				Comentario comentario = new Comentario();
-				comentario.setIdPublicacao(resultSet.getInt("idPublicacao"));
-				comentario.setIdComentario(resultSet.getInt("idComentario"));
-				comentario.setTexto(resultSet.getString("texto"));
-				comentario.setData(resultSet.getTimestamp("data"));
-				comentario.setIdUsuario(resultSet.getInt("idUsuario"));
-				comentario.setNumLikes(resultSet.getInt("numCurtidas"));
-				comentario.setUsername(resultSet.getString("username"));
-				comentarios.add(comentario);
+		if ("ListarComentarios".equals(acao)) {
+
+			List<Comentario> comentarios = new ArrayList<>();
+			String idPublicacao = request.getParameter("idPublicacao");
+			DBQuery dbQuery = new DBQuery("Comentario",
+					"idComentario, idPublicacao, idUsuario, texto, data, numLikes, username", "idComentario");
+			ResultSet resultSet = dbQuery.select("idPublicacao = " + idPublicacao);
+
+			try {
+				while (resultSet.next()) {
+					Comentario comentario = new Comentario();
+					comentario.setIdPublicacao(resultSet.getInt("idPublicacao"));
+					comentario.setIdComentario(resultSet.getInt("idComentario"));
+					comentario.setTexto(resultSet.getString("texto"));
+					comentario.setData(resultSet.getTimestamp("data"));
+					comentario.setIdUsuario(resultSet.getInt("idUsuario"));
+					comentario.setNumLikes(resultSet.getInt("numLikes"));
+					comentario.setUsername(resultSet.getString("username"));
+					comentarios.add(comentario);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 
-		String json = new Gson().toJson(comentarios);
-		response.getWriter().write(json);
+			String json = new Gson().toJson(comentarios);
+			response.getWriter().write(json);
+		}
+		
+		if ("BuscarNumLikes".equals(acao)) {
+			String idComentario = request.getParameter("id");
+
+			DBQuery dbQuery = new DBQuery("Comentario", "numLikes", "idComentario");
+			ResultSet resultSet = dbQuery.select("idComentario = " + idComentario);
+
+			try {
+				while (resultSet.next()) {
+					Comentario comentario = new Comentario();
+					comentario.setNumLikes(resultSet.getInt("numLikes"));
+
+					String json = new Gson().toJson(comentario);
+					response.getWriter().write(json);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
@@ -79,7 +105,7 @@ public class ComentarioControl extends HttpServlet {
 		dbQuery.delete(comentario);
 
 		dbQuery.decrement("Publicacao", "idPublicacao", idPublicacao, "numComentarios");
-		
+
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().write("{}");
 
@@ -98,7 +124,7 @@ public class ComentarioControl extends HttpServlet {
 		String idPublicacao = request.getParameter("idPublicacao");
 		int idUsuario = (int) request.getSession().getAttribute("idUsuario");
 		String texto = request.getParameter("texto");
-		
+
 		DBQuery dbquery = new DBQuery("usuario", "username", "idUsuario");
 		ResultSet rsUsuario = dbquery.select("idUsuario = " + idUsuario);
 		String username = "";

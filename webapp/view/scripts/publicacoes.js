@@ -133,10 +133,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
 					const dataFormatada = `${dia}/${mes}/${ano} ${hora}:${minutos}`;
 
 					//////// CAMPOS DA PUBLICAÇÃO ////////
-					$publicacao.find(".span-publicacao-autor").text("Por: " + publicacao.username);
+					$publicacao.find(".span-publicacao-autor").text(publicacao.usuario.username);
 					$publicacao.find(".span-publicacao-data").text(dataFormatada);
 					$publicacao.find(".publicacao-texto").text(publicacao.texto);
 					$publicacao.find(".adicionarComentarioForm").data("id-publicacao", publicacao.idPublicacao);
+
+					if (publicacao.imagem) {
+						$publicacao.find(".imagem").attr("src", "/ProjetoTCC/" + publicacao.imagem).show();
+					} else {
+						$publicacao.find(".imagem").hide();
+					}
+
+					//////// IMAGEM DO USUÁRIO ////////
+					
+					console.log(publicacao)
+					const $fotoPerfil = $publicacao.find(".headerPublicacao").find(".cardImagemUsuario").find(".fotoPerfil");
+					$fotoPerfil.attr("src", "/ProjetoTCC/" + publicacao.usuario.foto).show();
 
 					//////// BOTÃO DE CURTIR PUBLICAÇÃO ////////
 					const curtirPublicacaoTemplate = document.querySelector("#curtirPublicacaoTemplate").content;
@@ -145,7 +157,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
 					const numLikesSpan = $curtirPublicacaoClone.find(".numLikes");
 					const $icone = $curtirPublicacao.find("i");
 
-					numLikesSpan.text(publicacao.numLikes);
+					function buscarNumLikes(span, id, nomeControl) {
+						$.ajax({
+							url: "/ProjetoTCC/api/" + nomeControl,
+							type: "GET",
+							cache: false,
+							dataType: "json",
+							data: {
+								acao: "BuscarNumLikes",
+								id: id
+							},
+							success: function(NumLikes) {
+								span.text(NumLikes.numLikes);
+							},
+							error: function(err) {
+								console.warn("GET LikeControl falhou: " + err);
+							}
+						});
+					}
+
+					buscarNumLikes(numLikesSpan, publicacao.idPublicacao, "PublicacaoControl");
 
 					$.ajax({
 						url: "/ProjetoTCC/api/LikeControl",
@@ -162,7 +193,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 							}
 						},
 						error: function(err) {
-							console.warn("GET LikeControl falhou para", idPublicacaoFechada, err);
+							console.warn("GET LikeControl falhou");
 						}
 					});
 
@@ -175,11 +206,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 								type: "POST",
 								data: {
 									acao: "adicionarLike",
-									idPublicacao: publicacao.idPublicacao
+									id: publicacao.idPublicacao,
+									idNome: "idPublicacao",
+									tabelaLike: "LikePubli",
+									tabelaParent: "publicacao"
 								},
 								success: function() {
 									$icone.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
-									buscarNumLikes();
+									buscarNumLikes(numLikesSpan, publicacao.idPublicacao, "PublicacaoControl");
 								},
 								complete: function() {
 									setTimeout(function() {
@@ -193,11 +227,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 								type: "POST",
 								data: {
 									acao: "removerLike",
-									idPublicacao: publicacao.idPublicacao
+									id: publicacao.idPublicacao,
+									idNome: "idPublicacao",
+									tabelaLike: "LikePubli",
+									tabelaParent: "publicacao"
 								},
 								success: function() {
 									$icone.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
-									buscarNumLikes();
+									buscarNumLikes(numLikesSpan, publicacao.idPublicacao, "PublicacaoControl");
 								},
 								complete: function() {
 									setTimeout(function() {
@@ -206,30 +243,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
 								}
 							});
 						}
-
-						function buscarNumLikes() {
-							$.ajax({
-								url: "/ProjetoTCC/api/PublicacaoControl",
-								type: "GET",
-								cache: false,
-								dataType: "json",
-								data: {
-									acao: "BuscarNumLikes",
-									idPublicacao: publicacao.idPublicacao
-								},
-								success: function(NumLikes) {
-									numLikesSpan.text(NumLikes.numLikes);
-								},
-								error: function(err) {
-									console.warn("GET LikeControl falhou: " + err);
-								}
-							});
-						}
 					});
+
 					$publicacao.find(".headerPublicacao").append($curtirPublicacaoClone);
 
 					//////// BOTÕES DE AÇÃO DA PUBLICAÇÃO (EDITAR/EXCLUIR) ////////
-					if (publicacao.idUsuario == idUsuario) {
+					if (publicacao.usuario.idUsuario == idUsuario) {
 						const acoesPublicacaoTemplate = document.querySelector("#acoesPublicacaoTemplate").content;
 						const $acoesPublicacaoClone = acoesPublicacaoTemplate.cloneNode(true);
 						const $excluirPublicacao = $($acoesPublicacaoClone).find(".excluirPublicacao");
@@ -266,8 +285,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 					//////// CARREGAR COMENTÁRIOS ////////
 					if (publicacao.numComentarios > 0) {
+						console.log("\n\nTESTE\n\n")
+
 						$.ajax({
-							url: "/ProjetoTCC/api/ComentarioControl?idPublicacao=" + publicacao.idPublicacao,
+							url: "/ProjetoTCC/api/ComentarioControl",
+							data: {
+								acao: "ListarComentarios",
+								idPublicacao: publicacao.idPublicacao,
+							},
 							method: "GET",
 							dataType: "json",
 							success: function(comentarios) {
@@ -306,61 +331,77 @@ document.addEventListener("DOMContentLoaded", (event) => {
 									const $curtirComentario = $($curtirComentarioClone).find(".curtirComentario");
 									$curtirComentario.find(".curtirComentarioButton").data("id-comentario", comentario.idComentario);
 									$comentario.append($curtirComentario);
+									const $iconeComentario = $curtirComentario.find("i");
+									const numLikesSpanComentario = $curtirComentario.find(".numLikesComentario");
 
-									numLikesSpan.text(comentario.numLikes);
-									/*
-																		$.ajax({
-																			url: "/ProjetoTCC/api/LikeControl",
-																			type: "GET",
-																			dataType: "json",
-																			data: {
-																				id: publicacao.idPublicacao,
-																				idNome: "idPublicacao",
-																				tabela: "LikePubli"
-																			},
-																			success: function(response) {
-																				if (response && response.curtido === true) {
-																					$icone.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
-																				}
-																			},
-																			error: function(err) {
-																				console.warn("GET LikeControl falhou para", idPublicacaoFechada, err);
-																			}
-																		});
-									
-																		$curtirPublicacao.on("click", function() {
-									
-																			if ($icone.hasClass("bi-heart")) {
-																				$.ajax({
-																					url: "/ProjetoTCC/api/LikeControl",
-																					type: "POST",
-																					data: {
-																						acao: "adicionarLike",
-																						idPublicacao: publicacao.idPublicacao
-																					},
-																					success: function() {
-																						$icone.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
-																						publicacao.numLikes += 1;
-																						numLikesSpan.text(publicacao.numLikes);
-																					}
-																				});
-																			} else {
-																				$.ajax({
-																					url: "/ProjetoTCC/api/LikeControl",
-																					type: "POST",
-																					data: {
-																						acao: "removerLike",
-																						idPublicacao: publicacao.idPublicacao
-																					},
-																					success: function() {
-																						$icone.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
-																						publicacao.numLikes -= 1;
-																						numLikesSpan.text(publicacao.numLikes);
-																					}
-																				})
-																			}
-																		});*/
+									buscarNumLikes(numLikesSpanComentario, comentario.idComentario, "ComentarioControl");
 
+									$.ajax({
+										url: "/ProjetoTCC/api/LikeControl",
+										type: "GET",
+										dataType: "json",
+										data: {
+											id: comentario.idComentario,
+											idNome: "idComentario",
+											tabela: "LikeComent"
+										},
+										success: function(response) {
+											if (response && response.curtido === true) {
+												$iconeComentario.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+											}
+										},
+										error: function(err) {
+											console.warn("GET LikeControl falhou");
+										}
+									});
+
+									$curtirComentario.off("click").on("click", function() {
+										$curtirComentario.prop("disabled", true);
+
+										if ($iconeComentario.hasClass("bi-heart")) {
+											$.ajax({
+												url: "/ProjetoTCC/api/LikeControl",
+												type: "POST",
+												data: {
+													acao: "adicionarLike",
+													id: comentario.idComentario,
+													idNome: "idComentario",
+													tabelaLike: "LikeComent",
+													tabelaParent: "comentario"
+												},
+												success: function() {
+													$iconeComentario.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+													buscarNumLikes(numLikesSpanComentario, comentario.idComentario, "ComentarioControl");
+												},
+												complete: function() {
+													setTimeout(function() {
+														$curtirComentario.prop("disabled", false);
+													}, 800);
+												}
+											});
+										} else {
+											$.ajax({
+												url: "/ProjetoTCC/api/LikeControl",
+												type: "POST",
+												data: {
+													acao: "removerLike",
+													id: comentario.idComentario,
+													idNome: "idComentario",
+													tabelaLike: "LikeComent",
+													tabelaParent: "comentario"
+												},
+												success: function() {
+													$iconeComentario.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
+													buscarNumLikes(numLikesSpanComentario, comentario.idComentario, "ComentarioControl");
+												},
+												complete: function() {
+													setTimeout(function() {
+														$curtirComentario.prop("disabled", false);
+													}, 800);
+												}
+											});
+										}
+									});
 									$publicacao.find(".comentariosDiv").append($comentario);
 								});
 							}

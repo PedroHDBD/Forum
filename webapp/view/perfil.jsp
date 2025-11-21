@@ -19,6 +19,10 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
 	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 </head>
 <body class="p-3">
 
@@ -43,6 +47,7 @@
 			</button>
 
 		</div>
+
 		<h5 class="m-0 position-absolute start-50 translate-middle-x" id='h5'>Perfil</h5>
 
 		<div class="ms-auto d-flex flex-column text-end text-black">
@@ -60,59 +65,88 @@
 	</div>
 
 	<div class="d-flex mt-3">
-		<div class="card ratio ratio-1x1" style="max-width: 15vw;">
-			<div class="card-body d-flex justify-content-center align-items-center">
-				<i class='bi-image'></i>
+		<div class="card rounded-circle overflow-hidden" style="width: 15vw; aspect-ratio: 1/1; cursor: pointer;" id="cardImagemUsuario">
+			<form id="atualizarFoto" enctype="multipart/form-data">
+				<input type="file" id="inputImagem" name="imagem" accept="image/*"
+					hidden> <img id="imagem" class="foto-perfil">
+			</form>
+		</div>
+
+
+		<div class="modal fade" id="modalCrop" tabindex="-1"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h5 class="modal-title">Editar foto de perfil</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+
+					<div class="modal-body">
+						<div class="crop-container">
+							<img id="cropperImg" class="img-fluid">
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button id="cropCancel" class="btn btn-secondary"
+							data-bs-dismiss="modal">Cancelar</button>
+						<button id="cropConfirm" class="btn btn-primary">Confirmar</button>
+					</div>
+
+				</div>
 			</div>
 		</div>
 
 		<div class="d-flex flex-column justify-content-between p-3 w-100">
-		
+
 			<div class='d-flex justify-content-between w-50'>
-				<div class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
-					<span class='mx-2 fw-bold'>Nome:
-					<span id='nome' class='fw-bolder'></span></span>
+				<div
+					class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
+					<span class='mx-2 fw-bold'>Nome: <span id='nome'
+						class='fw-bolder'></span></span>
 				</div>
 				<span class='form-editar editarUsername'>
-					<button type="submit" class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
+					<button type="submit"
+						class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
 						<i class="bi bi-pencil fs-5 px-1"></i>
 					</button>
 				</span>
 			</div>
-			
+
 			<div class='d-flex justify-content-between w-50'>
-				<div class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
-					<span class='mx-2 fw-bold'>Nome de usuário:
-					<span id='username' class='fw-bolder'></span></span>
+				<div
+					class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
+					<span class='mx-2 fw-bold'>Nome de usuário: <span
+						id='username' class='fw-bolder'></span></span>
 				</div>
 				<span class='form-editar editarUsername'>
-					<button type="submit" class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
+					<button type="submit"
+						class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
 						<i class="bi bi-pencil fs-5 px-1"></i>
 					</button>
 				</span>
 			</div>
-			
-			<div class='bg-secondary-subtle w-50 rounded-pill p-2 d-flex justify-content-between'>
-				<span class='mx-2 fw-bold'>Entrou em:
-				<span id='data' class='fw-bolder'></span></span>
+
+			<div
+				class='bg-secondary-subtle w-50 rounded-pill p-2 d-flex justify-content-between'>
+				<span class='mx-2 fw-bold'>Entrou em: <span id='data'
+					class='fw-bolder'></span></span>
 			</div>
-			
+
 		</div>
 	</div>
 
 	<div class="offcanvas offcanvas-end " tabindex="-1" id="offcanvasRight"
 		aria-labelledby="offcanvasRightLabel">
 		<div class="offcanvas-header">
-			<h5 id="offcanvasRightLabel">Utilitários</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
 				aria-label="Fechar"></button>
 		</div>
 		<div class="offcanvas-body">
-			<p>Selecione uma opção:</p>
 			<ul class="list-group">
 				<li class="list-group-item"><a href="perfil.jsp">Perfil</a></li>
-				<li class="list-group-item"><a href="#">Configurações</a></li>
-				<li class="list-group-item"><a href="#">Ajuda</a></li>
 				<li class="list-group-item"><a href="login.jsp">Sair</a></li>
 			</ul>
 		</div>

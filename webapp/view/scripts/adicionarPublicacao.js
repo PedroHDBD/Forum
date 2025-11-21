@@ -40,24 +40,40 @@ document.addEventListener("DOMContentLoaded", (event) => {
 })
 
 function adicionarPublicacao(form) {
+  const texto = form.find('textarea[name="texto"]').val().trim();
+  const imagem = form.find('input[name="imagem"]')[0].files[0];
+  
+  if (imagem && imagem.size > 5 * 1024 * 1024) {
+    alert("A imagem deve ter no máximo 5MB.");
+    return;
+  }
 
-	const texto = form.find('textarea[name="texto"]').val().trim();
+  if (!texto) {
+    alert("Preencha o texto da publicação.");
+    return;
+  }
 
-	if (!texto) {
-		alert("Preencha todos os campos.");
-		return;
-	}
+  const formData = new FormData();
+  formData.append('acao', 'adicionarPublicacao');
+  formData.append('idTopico', idTopico);
+  formData.append('texto', texto);
 
-	$.ajax({
-		url: '/ProjetoTCC/api/PublicacaoControl?acao=adicionarPublicacao&idTopico=' + idTopico,
-		type: 'POST',
-		data: { texto: texto },
-		success: function() {
-			window.location.href = './publicacoes.jsp?idTopico=' + idTopico;
-		},
-		error: function(xhr, status, error) {
-			console.error("Erro:", status, error);
-			console.error("Resposta do servidor:", xhr.responseText);
-		}
-	});
+  if (imagem) {
+    formData.append('imagem', imagem);
+  }
+  
+  $.ajax({
+    url: '/ProjetoTCC/api/PublicacaoControl',
+    type: 'POST',
+    data: formData,
+    processData: false, 
+    contentType: false,  
+    success: function() {
+      window.location.href = './publicacoes.jsp?idTopico=' + idTopico;
+    },
+    error: function(xhr, status, error) {
+      console.error("Erro:", status, error);
+      console.error("Resposta do servidor:", xhr.responseText);
+    }
+  });
 }

@@ -80,34 +80,40 @@
 	</div>
 
 	<template id='publicacao-template'>
-		<div class='my-5 w-75 shadow rounded-3 publicacao'>
+		<div class='my-5 w-75 shadow rounded-3 publicacao bg-dark-subtle'>
 
-			<div
-				class=' p-3 m-0 bg-dark bg-gradient text-white rounded-3 rounded-bottom-0 fs-3 d-flex justify-content-between align-items-center headerPublicacao'>
-				<span class='span-publicacao-autor'></span> <span
-					class='fw-normal m-0 flex-grow-1 ms-5 float-end span-publicacao-data fs-6'></span>
+			<div class=' p-3 m-0 bg-dark bg-gradient text-white rounded-3 rounded-bottom-0 fs-3 d-flex justify-content-between headerPublicacao'>
+				<div class="card rounded-circle overflow-hidden cardImagemUsuario" style="width: 6vw; aspect-ratio: 1/1">
+					<img class='img-fluid fotoPerfil'>
+				</div>
+					<span class='span-publicacao-autor mt-1 ms-2'></span>
+					<span class='fw-normal m-0 flex-grow-1 ms-5 mt-3 float-end span-publicacao-data fs-6'></span>
+				</div>
+
+				<h5 class='p-3 m-0 bg-dark-subtle fw-normal py-4 text-break publicacao-texto'></h5>
+				<hr class='m-0'>
+
+				<div class="w-50 h-25 mx-auto text-center">
+					<img class="imagem img-fluid rounded-3 p-3">
+				</div>
+
+				<div class='bg-body-secondary p-3'>Comentários:</div>
+
+				<div class='comentariosDiv p-1 bg-body-secondary'></div>
+
+				<div class='adicionarComentario d-flex align-items-stretch w-100'>
+					<form class='d-flex w-100 adicionarComentarioForm'>
+						<input type='text' name='texto' maxlength='1000' required
+							placeholder='Digite seu comentário...' autocomplete='off'
+							class='p-2 border-dark border-opacity-50 flex-grow-1'
+							style='border-radius: 0 0 0 0.375rem'>
+						<button type='submit'
+							class='btn-submit px-3 bg-info-subtle bg-gradient border border-black border-opacity-10 fs-6 custom-rounded adicionarComentarioButton'>
+							<i class='bi bi-send fs-5'></i>
+						</button>
+					</form>
+				</div>
 			</div>
-
-			<h5
-				class='p-3 m-0 bg-dark-subtle fw-normal py-4 text-break publicacao-texto'></h5>
-
-			<div class='bg-body-secondary p-3'>Comentários:</div>
-			
-			<div class='comentariosDiv p-1 bg-body-secondary'></div>
-
-			<div class='adicionarComentario d-flex align-items-stretch w-100'>
-				<form class='d-flex w-100 adicionarComentarioForm'>
-					<input type='text' name='texto' maxlength='1000' required
-						placeholder='Digite seu comentário...' autocomplete='off'
-						class='p-2 border-dark border-opacity-50 flex-grow-1'
-						style='border-radius: 0 0 0 0.375rem'>
-					<button type='submit'
-						class='btn-submit px-3 bg-info-subtle bg-gradient border border-black border-opacity-10 fs-6 custom-rounded adicionarComentarioButton'>
-						<i class='bi bi-send fs-5'></i>
-					</button>
-				</form>
-			</div>
-		</div>
 	</template>
 
 	<template id='comentario-template'>
@@ -124,7 +130,7 @@
 			class='d-flex border-top border-bottom border-black border-opacity-10 curtirComentario'>
 			<button type="submit"
 				class="d-flex px-3 forumBtn fs-6 h-100 align-items-center curtirComentarioButton w-100">
-				<span class="numLikes fs-5 mb-1 pe-1">0</span> <i
+				<span class="numLikesComentario fs-5 mb-1 pe-2">0</span> <i
 					class="bi bi-heart fs-5"></i>
 			</button>
 		</div>
@@ -134,7 +140,7 @@
 		<div
 			class='d-flex border-top border-bottom border-black border-opacity-10 excluirComentario'>
 			<button type='submit'
-				class='px-3 forumBtn fs-6 h-100 excluirComentarioButton'>
+				class='ps-3 forumBtn fs-6 h-100 excluirComentarioButton'>
 				<i class='bi bi-trash fs-5'></i>
 			</button>
 		</div>
@@ -197,9 +203,7 @@
 		<div class="offcanvas-body">
 			<p>Selecione uma opção:</p>
 			<ul class="list-group">
-				<li class="list-group-item"><a href="#">Perfil</a></li>
-				<li class="list-group-item"><a href="#">Configurações</a></li>
-				<li class="list-group-item"><a href="#">Ajuda</a></li>
+				<li class="list-group-item"><a href="perfil.jsp">Perfil</a></li>
 				<li class="list-group-item"><a href="login.jsp">Sair</a></li>
 			</ul>
 		</div>
