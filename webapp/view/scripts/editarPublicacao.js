@@ -55,14 +55,37 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 		$(document).on("click", ".editarPublicacaoButton", function(e) {
 			e.preventDefault();
+			
+			const textoAtual = document.getElementById("textoAtual").value
+			
+			const input = document.getElementById('imagem');
+			
+			let imagem = null;
+
+			if (input.files && input.files.length > 0) {
+			    imagem = input.files[0]; 
+			}
+
+			if (imagem && imagem.size > 5 * 1024 * 1024) {
+			  alert("A imagem deve ter no máximo 5MB.");
+			  return;
+			}
+			
+			const formData = new FormData();
+			formData.append('acao', 'editar');
+			formData.append('idPublicacao', idPublicacao);
+			formData.append('texto', textoAtual);
+
+			if (imagem) {
+			  formData.append('imagem', imagem);
+			}
+			
 			$.ajax({
 				url: '/ProjetoTCC/api/PublicacaoControl',
 				type: 'POST',
-				data: {
-					acao: 'editar',
-					idPublicacao: idPublicacao,
-					texto: document.getElementById("textoAtual").value
-				},
+				data: formData,
+				processData: false,
+				contentType: false,
 				success: function() {
 					window.location.href = './publicacoes.jsp?idTopico=' + idTopico;
 				},

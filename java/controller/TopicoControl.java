@@ -1,14 +1,18 @@
 package controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import com.google.gson.Gson;
 
@@ -17,6 +21,9 @@ import model.Forum;
 import model.Topico;
 
 @WebServlet("/api/TopicoControl")
+
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 10)
+
 public class TopicoControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -90,28 +97,52 @@ public class TopicoControl extends HttpServlet {
 
 			String idForum = request.getParameter("idForum");
 			int idUsuario = (int) request.getSession().getAttribute("idUsuario");
+			String username = (String) request.getSession().getAttribute("username");
 			String titulo = request.getParameter("titulo");
 			String texto = request.getParameter("texto");
+			
+			System.out.println("\n\n\n" + idForum + "\n\n\n");
 
-			DBQuery dbquery = new DBQuery("usuario", "username", "idUsuario");
-			ResultSet rsUsuario = dbquery.select("idUsuario = " + idUsuario);
-			String username = "";
-
-			try {
-				if (rsUsuario != null && rsUsuario.next()) {
-					username = rsUsuario.getString("username");
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			dbquery = new DBQuery("Topico", "titulo, idForum, idUsuario, username", "idTopico");
+			DBQuery dbquery = new DBQuery("Topico", "titulo, idForum, idUsuario, username", "idTopico");
 			String[] topico = { titulo, idForum, String.valueOf(idUsuario), username };
 			int idNovoTopico = dbquery.insert(topico);
+			
+			Part imagemPart = request.getPart("imagem");
+			String caminhoImagem = null;
 
-			dbquery = new DBQuery("Publicacao", "idTopico, texto, idUsuario, username", "idPublicacao");
-			String[] publicacao = { String.valueOf(idNovoTopico), texto, String.valueOf(idUsuario), username };
-			dbquery.insert(publicacao);
+			if (imagemPart != null && imagemPart.getSize() > 0) {
+
+				if (imagemPart.getSize() > (5 * 1024 * 1024)) {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					response.setContentType("application/json");
+					response.getWriter().write("{\"erro\":\"A imagem deve ter no máximo 5MB.\"}");
+					return;
+				}
+
+				String nomeArquivo = UUID.randomUUID().toString() + "_" + imagemPart.getSubmittedFileName();
+				String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator
+						+ "publicacoes";
+
+				File uploadDir = new File(uploadPath);
+				if (!uploadDir.exists())
+					uploadDir.mkdirs();
+
+				imagemPart.write(uploadPath + File.separator + nomeArquivo);
+				caminhoImagem = "uploads/publicacoes/" + nomeArquivo;
+			}
+			
+			if (caminhoImagem != null && !caminhoImagem.isEmpty()) {
+				dbquery = new DBQuery("Publicacao", "idTopico, texto, idUsuario, imagem", "idPublicacao");
+				String[] publicacao = { String.valueOf(idNovoTopico), texto, String.valueOf(idUsuario),caminhoImagem };
+				dbquery.insert(publicacao);
+				response.setStatus(HttpServletResponse.SC_OK);
+
+			} else {
+				dbquery = new DBQuery("Publicacao", "idTopico, texto, idUsuario", "idPublicacao");
+				String[] publicacao = { String.valueOf(idNovoTopico), texto, String.valueOf(idUsuario) };
+				dbquery.insert(publicacao);
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
 
 			String idTopico = Integer.toString(idNovoTopico);
 			request.getSession().setAttribute("idTopico", idTopico);

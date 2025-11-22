@@ -68,11 +68,14 @@
 	<div
 		class='d-flex flex-column justify-content-center align-items-center m-0 p-3 w-100'>
 
-		<form class='w-75 bg-dark-subtle py-3 px-4 rounded-3 shadow'>
+		<form class='w-75 bg-dark-subtle py-3 px-4 rounded-3 shadow' enctype="multipart/form-data">
 			<label for="texto" class='fs-5 mb-1'>Texto: </label>
 			<textarea name="texto" rows="21" maxlength="2000" required
 				class='w-100 lh-1 rounded-3 p-2 border border-dark border-opacity-25 texto'
 				placeholder='Máximo: 2000 caracteres' id='textoAtual'></textarea>
+
+			<input type="file" name="imagem" accept="image/*" id="imagem"> <br>
+			
 			<input type="submit" name="submit" value="Editar"
 				class='rounded-3 py-1 px-3 border border-dark border-opacity-25 mt-1 bg-secondary-subtle fs-5 editarPublicacaoButton'>
 		</form>

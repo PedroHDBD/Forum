@@ -32,6 +32,12 @@ function adicionarTopico(form) {
 
 	const titulo = form.find('input[name="titulo"]').val().trim();
 	const texto = form.find('textarea[name="texto"]').val().trim();
+	const imagem = form.find('input[name="imagem"]')[0].files[0];
+
+	if (imagem && imagem.size > 5 * 1024 * 1024) {
+		alert("A imagem deve ter no máximo 5MB.");
+		return;
+	}
 
 	const urlParams = new URLSearchParams(window.location.search);
 	const idForum = parseInt(urlParams.get('idForum'));
@@ -41,15 +47,23 @@ function adicionarTopico(form) {
 		return;
 	}
 
-	const formData = form.serializeArray();
+	const formData = new FormData();
 
-	formData.push({ name: "idForum", value: idForum });
-	formData.push({ name: "acao", value: "adicionarTopico" });
+	if (imagem) {
+		formData.append('imagem', imagem);
+	}
+
+	formData.append('idForum', idForum);
+	formData.append('acao', "adicionarTopico");
+	formData.append('titulo', titulo);
+	formData.append('texto', texto);
 
 	$.ajax({
 		url: '/ProjetoTCC/api/TopicoControl',
 		type: 'POST',
-		data: $.param(formData),
+		data: formData,
+		processData: false, 
+		contentType: false,  
 		dataType: "json",
 		success: function(response) {
 			window.location.href = './publicacoes.jsp?idTopico=' + response.idTopico;

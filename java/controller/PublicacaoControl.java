@@ -137,10 +137,7 @@ public class PublicacaoControl extends HttpServlet {
 
 			String idTopico = request.getParameter("idTopico");
 			int idUsuario = (int) request.getSession().getAttribute("idUsuario");
-			String username = (String) request.getSession().getAttribute("username");
 			String texto = request.getParameter("texto");
-
-			DBQuery dbquery = new DBQuery("usuario", "username", "idUsuario");
 
 			Part imagemPart = request.getPart("imagem");
 			String caminhoImagem = null;
@@ -167,13 +164,13 @@ public class PublicacaoControl extends HttpServlet {
 			}
 
 			if (caminhoImagem != null && !caminhoImagem.isEmpty()) {
-				dbquery = new DBQuery("Publicacao", "texto, idTopico, idUsuario, imagem", "idPublicacao");
+				DBQuery dbquery = new DBQuery("Publicacao", "texto, idTopico, idUsuario, imagem", "idPublicacao");
 				String[] publicacao = { texto, idTopico, String.valueOf(idUsuario), caminhoImagem };
 				dbquery.insert(publicacao);
 				response.setStatus(HttpServletResponse.SC_OK);
 
 			} else {
-				dbquery = new DBQuery("Publicacao", "texto, idTopico, idUsuario", "idPublicacao");
+				DBQuery dbquery = new DBQuery("Publicacao", "texto, idTopico, idUsuario", "idPublicacao");
 				String[] publicacao = { texto, idTopico, String.valueOf(idUsuario) };
 				dbquery.insert(publicacao);
 				response.setStatus(HttpServletResponse.SC_OK);
@@ -183,12 +180,44 @@ public class PublicacaoControl extends HttpServlet {
 		if ("editar".equals(acao)) {
 			String idPublicacao = request.getParameter("idPublicacao");
 			String texto = request.getParameter("texto");
+			
+			Part imagemPart = request.getPart("imagem");
+			String caminhoImagem = null;
 
-			DBQuery query = new DBQuery("Publicacao", "texto, idPublicacao", "idPublicacao");
-			String[] publicacao = { texto, idPublicacao };
+			if (imagemPart != null && imagemPart.getSize() > 0) {
 
-			query.update(publicacao);
-			response.setStatus(HttpServletResponse.SC_OK);
+				if (imagemPart.getSize() > (5 * 1024 * 1024)) {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					response.setContentType("application/json");
+					response.getWriter().write("{\"erro\":\"A imagem deve ter no máximo 5MB.\"}");
+					return;
+				}
+
+				String nomeArquivo = UUID.randomUUID().toString() + "_" + imagemPart.getSubmittedFileName();
+				String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator
+						+ "publicacoes";
+
+				File uploadDir = new File(uploadPath);
+				if (!uploadDir.exists())
+					uploadDir.mkdirs();
+
+				imagemPart.write(uploadPath + File.separator + nomeArquivo);
+				caminhoImagem = "uploads/publicacoes/" + nomeArquivo;
+			}
+
+			if (caminhoImagem != null && !caminhoImagem.isEmpty()) {
+				DBQuery query = new DBQuery("Publicacao", "texto, idPublicacao, imagem", "idPublicacao");
+				String[] publicacao = { texto, idPublicacao, caminhoImagem};
+				query.update(publicacao);
+				response.setStatus(HttpServletResponse.SC_OK);
+
+			} else {
+				DBQuery query = new DBQuery("Publicacao", "texto, idPublicacao", "idPublicacao");
+				String[] publicacao = { texto, idPublicacao };
+				query.update(publicacao);
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
+			
 		}
 	}
 

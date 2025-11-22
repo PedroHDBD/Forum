@@ -62,7 +62,7 @@
 	<div
 		class='d-flex flex-column justify-content-center align-items-center m-0 p-3 w-100'>
 
-		<form method="POST"
+		<form method="POST" enctype="multipart/form-data"
 			class='w-75 bg-dark-subtle py-3 px-4 rounded-3 shadow adicionarTopico'
 			id='adicionarTopicoForm'>
 
@@ -75,8 +75,9 @@
 				class='w-100 lh-1 rounded-3 p-2 border border-dark border-opacity-25'
 				placeholder='Máximo: 2000 caracteres'></textarea>
 
-			<input type="submit" name="submit" value="Criar"
-				class='rounded-3 py-1 px-3 border border-dark border-opacity-25 mt-1 bg-secondary-subtle fs-5 adicionarTopicoButton'>
+			<input type="file" name="imagem" accept="image/*"> 
+			<br>
+			<input type="submit" name="submit" value="Criar" class='rounded-3 py-1 px-3 border border-dark border-opacity-25 mt-1 bg-secondary-subtle fs-5 adicionarTopicoButton'>
 		</form>
 
 	</div>
