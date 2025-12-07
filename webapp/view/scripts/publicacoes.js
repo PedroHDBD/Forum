@@ -145,8 +145,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 					}
 
 					//////// IMAGEM DO USUÁRIO ////////
-					
-					console.log(publicacao)
 					const $fotoPerfil = $publicacao.find(".headerPublicacao").find(".cardImagemUsuario").find(".fotoPerfil");
 					$fotoPerfil.attr("src", "/ProjetoTCC/" + publicacao.usuario.foto).show();
 
@@ -285,7 +283,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 					//////// CARREGAR COMENTÁRIOS ////////
 					if (publicacao.numComentarios > 0) {
-						console.log("\n\nTESTE\n\n")
 
 						$.ajax({
 							url: "/ProjetoTCC/api/ComentarioControl",
@@ -312,25 +309,35 @@ document.addEventListener("DOMContentLoaded", (event) => {
 									const minutosComentario = dataComentarioLocal.getUTCMinutes().toString().padStart(2, '0');
 									const dataComentarioFormatada = `${diaComentario}/${mesComentario}/${anoComentario} ${horaComentario}:${minutosComentario}`;
 
-									$comentario.find('.comentarioConteudo').html("<div><span class='fw-bolder pe-1'>" + comentario.username + ": </span> " + comentario.texto + "</div>");
-									$comentario.find('.comentarioData').text(dataComentarioFormatada);
+									$comentario.find(".imagemPerfilComentario")
+										.attr("src", "/ProjetoTCC/" + comentario.usuario.foto);
 
-									// Botão excluir comentário
-									if (comentario.idUsuario == idUsuario) {
-										const excluirComentarioTemplate = document.querySelector("#excluirComentarioTemplate").content;
-										const $excluirComentarioClone = excluirComentarioTemplate.cloneNode(true);
-										const $excluirComentario = $($excluirComentarioClone).find(".excluirComentario");
+									$comentario.find(".comentarioUsername").text(comentario.username);
+									$comentario.find(".comentarioTexto").text(comentario.texto);
+									$comentario.find(".comentarioData").text(dataComentarioFormatada);
 
-										$excluirComentario.find(".excluirComentarioButton").data("id-comentario", comentario.idComentario);
-										$comentario.append($excluirComentario);
+									const $actions = $comentario.find(".comentarioActions");
+
+									if (comentario.usuario.idUsuario == idUsuario) {
+									    const excluirComentarioTemplate = document.querySelector("#excluirComentarioTemplate").content;
+									    const $excluirComentarioClone = excluirComentarioTemplate.cloneNode(true);
+									    const $excluirComentario = $($excluirComentarioClone).find(".excluirComentario");
+
+									    $excluirComentario.find(".excluirComentarioButton")
+									        .data("id-comentario", comentario.idComentario);
+
+									    $actions.append($excluirComentario);
 									}
 
-									// Botão curtir comentário
 									const curtirComentarioTemplate = document.querySelector("#curtirComentarioTemplate").content;
 									const $curtirComentarioClone = curtirComentarioTemplate.cloneNode(true);
 									const $curtirComentario = $($curtirComentarioClone).find(".curtirComentario");
-									$curtirComentario.find(".curtirComentarioButton").data("id-comentario", comentario.idComentario);
-									$comentario.append($curtirComentario);
+
+									$curtirComentario.find(".curtirComentarioButton")
+									    .data("id-comentario", comentario.idComentario);
+
+									$actions.append($curtirComentario);
+
 									const $iconeComentario = $curtirComentario.find("i");
 									const numLikesSpanComentario = $curtirComentario.find(".numLikesComentario");
 
@@ -402,10 +409,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
 											});
 										}
 									});
+									$publicacao.find(".comentariosDiv").show();
 									$publicacao.find(".comentariosDiv").append($comentario);
 								});
 							}
 						});
+					}else{
+						$publicacao.find(".comentariosDiv").hide();
 					}
 					$publicacoesList.append($publicacao);
 				});

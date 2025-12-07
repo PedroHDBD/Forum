@@ -10,6 +10,15 @@ public class Comentario {
 	private int numLikes;
 	private Timestamp data;
 	private String username;
+	private Usuario usuario;
+	
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 	public int getIdComentario() {
 		return idComentario;
 	}
@@ -46,7 +55,7 @@ public class Comentario {
 	public void setData(Timestamp data) {
 		this.data = data;
 	}
-	public String getUsername() {
+	public String getusuarioname() {
 		return username;
 	}
 	public void setUsername(String username) {

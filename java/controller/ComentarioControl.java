@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import database.DBQuery;
 import model.Comentario;
 import model.Publicacao;
+import model.Usuario;
 
 @WebServlet("/api/ComentarioControl")
 public class ComentarioControl extends HttpServlet {
@@ -42,20 +43,35 @@ public class ComentarioControl extends HttpServlet {
 
 			List<Comentario> comentarios = new ArrayList<>();
 			String idPublicacao = request.getParameter("idPublicacao");
-			DBQuery dbQuery = new DBQuery("Comentario",
-					"idComentario, idPublicacao, idUsuario, texto, data, numLikes, username", "idComentario");
-			ResultSet resultSet = dbQuery.select("idPublicacao = " + idPublicacao);
+			DBQuery db = new DBQuery();
+
+			String sql =
+				    "SELECT c.idComentario, c.idPublicacao, c.idUsuario, c.texto, c.data, c.numLikes, " +
+				    "u.idUsuario AS idUsuarioUsuario, u.username, u.foto " +
+				    "FROM Comentario c " +
+				    "JOIN Usuario u ON c.idUsuario = u.idUsuario " +
+				    "WHERE c.idPublicacao = " + idPublicacao + " " +
+				    "ORDER BY c.data ASC";
+
+			ResultSet rs = db.query(sql);
 
 			try {
-				while (resultSet.next()) {
+				while (rs.next()) {
 					Comentario comentario = new Comentario();
-					comentario.setIdPublicacao(resultSet.getInt("idPublicacao"));
-					comentario.setIdComentario(resultSet.getInt("idComentario"));
-					comentario.setTexto(resultSet.getString("texto"));
-					comentario.setData(resultSet.getTimestamp("data"));
-					comentario.setIdUsuario(resultSet.getInt("idUsuario"));
-					comentario.setNumLikes(resultSet.getInt("numLikes"));
-					comentario.setUsername(resultSet.getString("username"));
+					comentario.setIdPublicacao(rs.getInt("idPublicacao"));
+					comentario.setIdComentario(rs.getInt("idComentario"));
+					comentario.setTexto(rs.getString("texto"));
+					comentario.setData(rs.getTimestamp("data"));
+					comentario.setNumLikes(rs.getInt("numLikes"));
+					comentario.setUsername(rs.getString("username"));
+					
+					Usuario user = new Usuario();
+					user.setIdUsuario(rs.getInt("idUsuario"));
+					user.setUsername(rs.getString("username"));
+					user.setImagem(rs.getString("foto"));
+
+					comentario.setUsuario(user);
+
 					comentarios.add(comentario);
 				}
 			} catch (SQLException e) {
