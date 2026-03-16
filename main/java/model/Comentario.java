@@ -1,0 +1,66 @@
+package model;
+
+import java.sql.Timestamp;
+
+public class Comentario {
+	private int idComentario;
+	private int idUsuario;
+	private int idPublicacao;
+	private String texto;
+	private int numLikes;
+	private Timestamp data;
+	private String username;
+	private Usuario usuario;
+	
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	public int getIdComentario() {
+		return idComentario;
+	}
+	public void setIdComentario(int idComentario) {
+		this.idComentario = idComentario;
+	}
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+	public int getIdPublicacao() {
+		return idPublicacao;
+	}
+	public void setIdPublicacao(int idPublicacao) {
+		this.idPublicacao = idPublicacao;
+	}
+	public String getTexto() {
+		return texto;
+	}
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+	public int getNumLikes() {
+		return numLikes;
+	}
+	public void setNumLikes(int numLikes) {
+		this.numLikes = numLikes;
+	}
+	public Timestamp getData() {
+		return data;
+	}
+	public void setData(Timestamp data) {
+		this.data = data;
+	}
+	public String getusuarioname() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	
+}
