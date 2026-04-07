@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			success: function(publicacaoData) {
 				publicacaoTexto = publicacaoData.texto;
 				document.getElementById("textoAtual").value = publicacaoTexto;
-				$('#h5').text(forumNome + " - " + publicacaoNome + " - Editar publicação");
+				$('#h5').html("Editar publicação<br>" + forumNome + " - " + publicacaoNome);
 			}
 		});
 

@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 			method: "POST",
 			dataType: "json",
 			success: function(topico) {
-				document.getElementById("h5").textContent = forumNome + " - " + topico.titulo + " - Editar tópico";
+				$('#h5').html("Editar tópico<br>" + forumNome + " - " + topico.titulo);
 				document.getElementById("tituloAtual").value = topico.titulo;
 
 				$(document).on("click", ".editarTopicoButton", function(e) {

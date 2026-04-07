@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+body {
+	overflow-x: hidden;
+}
+
 * {
   font-family: "Lato", sans-serif;
   font-weight: 500;
@@ -92,10 +96,29 @@ body::-webkit-scrollbar {
 
 .forum-card {
     width: 100%;
-    max-width: 700px;   /* controla largura máxima no desktop */
+    max-width: 700px;  
     transition: 0.2s ease-in-out;
 }
 
 .forum-card:hover {
     transform: scale(1.01);
+}
+
+
+.botaoSubmit {
+    overflow: hidden; 
+}
+
+#offcanvasRight {
+    --bs-offcanvas-width: 50%;
+}
+
+.list-group-item {
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+    background-color: #f1f3f5;
+    transform: translateX(5px);
 }

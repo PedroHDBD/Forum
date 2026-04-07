@@ -29,35 +29,42 @@
 	}
 	%>
 
-	<!-- ================= HEADER ================= -->
 	<div class="container-fluid my-3 px-3">
-		<div class="bg-black bg-gradient text-white p-3 rounded-3 d-flex align-items-center position-relative w-100">
+		<div
+			class="bg-black bg-gradient text-white p-3 rounded-3 d-flex flex-column"
+			id="header">
 
-			<button type="button"
-				class="bg-dark bg-gradient rounded-2 text-white  border border-secondary border-opacity-50"
-				onclick="window.location.href = 'login.jsp'">
-				<i class="bi bi-arrow-left px-2 fs-4"></i>
-			</button>
 
-			<h5 class="m-0 position-absolute start-50 translate-middle-x">
-				Fóruns</h5>
+			<div class="d-flex align-items-center">
 
-			<button
-				class="bg-dark bg-gradient rounded-2 text-white border border-secondary border-opacity-50 ms-auto"
-				style="height: 3rem;" type="button" data-bs-toggle="offcanvas"
-				data-bs-target="#offcanvasRight">
-				<i class="bi bi-list px-2 fs-4"></i>
-			</button>
+				<div class="d-flex gap-2">
+					<button type="button"
+						class="bg-dark rounded-2 text-white border border-secondary border-opacity-50 p-1 p-md-2"
+						id="voltar" onclick="window.location.href = 'login.jsp'">
+						<i class="bi bi-arrow-left fs-6 fs-md-5"></i>
+					</button>
+				</div>
+
+				<div class="d-flex ms-auto align-items-center gap-1" id="acoes">
+					<button
+						class="bg-dark rounded-2 text-white border border-secondary border-opacity-50 p-1 p-md-2"
+						type="button" data-bs-toggle="offcanvas"
+						data-bs-target="#offcanvasRight">
+						<i class="bi bi-list fs-6 fs-md-5"></i>
+					</button>
+				</div>
+
+			</div>
+
+			<h5 class="mb-0 text-center fw-medium fs-5 h5Header">Fóruns</h5>
 
 		</div>
 	</div>
 
-	<!-- ================= LISTA DE FÓRUNS (GRID) ================= -->
 	<div class="container-fluid mt-4">
 		<div id="forum-list" class="row">Carregando fóruns...</div>
 	</div>
 
-	<!-- ================= TEMPLATE ================= -->
 	<template id="forum-template">
 		<div class="col-12 col-md-10 col-lg-8 col-xl-6 mb-3 px-3 d-flex">
 
@@ -74,45 +81,30 @@
 		</div>
 	</template>
 
-	<!-- ================= OFFCANVAS ================= -->
-	<div class="offcanvas offcanvas-end h-100" style="width: 15rem"
-		tabindex="-1" id="offcanvasRight">
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
+		<div class="offcanvas-body p-3">
 
-		<div
-			class="offcanvas-body d-flex align-items-center justify-content-center">
+			<div class="list-group list-group-flush">
 
-			<ul class="list-group w-75">
+				<a href="feed.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3">
+					<i class="bi bi-house fs-5"></i> <span>Feed</span>
+				</a> <a href="perfil.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-2">
+					<i class="bi bi-person-circle fs-5"></i> <span>Perfil</span>
+				</a> <a href="foruns.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-2">
+					<i class="bi bi-book fs-5"></i> <span>Fóruns</span>
+				</a> <a href="login.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-4 text-danger">
+					<i class="bi bi-box-arrow-right fs-5"></i> <span>Sair</span>
+				</a>
 
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="feed.jsp"> <i class="bi bi-house px-2 fs-4"></i> Feed
-				</a></li>
-
-				<br>
-
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="perfil.jsp"> <i class="bi bi-person-circle px-2 fs-4"></i>
-						Perfil
-				</a></li>
-
-				<br>
-
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="foruns.jsp"> <i class="bi bi-book px-2 fs-4"></i> Fóruns
-				</a></li>
-
-				<br>
-
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="login.jsp"> <i class="bi bi-escape px-2 fs-4"></i> Sair
-				</a></li>
-
-			</ul>
+			</div>
 
 		</div>
-
 	</div>
 
-	<!-- ================= SCRIPTS ================= -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

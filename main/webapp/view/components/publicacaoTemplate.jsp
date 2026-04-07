@@ -1,67 +1,85 @@
 <template id='publicacao-template'>
-	<div class='my-5 w-75 shadow rounded-3 publicacao bg-dark-subtle'>
+	<div class='publicacao bg-dark-subtle rounded-3 shadow h-100 d-flex flex-column'>
 
-		<div
-			class=' p-3 m-0 bg-dark bg-gradient text-white rounded-3 rounded-bottom-0 fs-3 d-flex justify-content-between headerPublicacao'>
-			<div class="card rounded-circle overflow-hidden cardImagemUsuario"
-				style="width: 6vw; aspect-ratio: 1/1">
-				<img class='img-fluid fotoPerfil'>
+		<!-- HEADER -->
+		<div class='p-3 bg-dark bg-gradient text-white d-flex align-items-center justify-content-between rounded-top'>
+
+			<div class="d-flex align-items-center gap-2">
+
+				<img class='fotoPerfil rounded-circle'
+					style="width: 48px; height: 48px; object-fit: cover;">
+
+				<div class="d-flex flex-column">
+					<span class='span-publicacao-autor fw-semibold'></span>
+					<span class='span-publicacao-data text-light small'></span>
+				</div>
+
 			</div>
-			<span class='span-publicacao-autor mt-1 ms-2'></span> <span
-				class='fw-normal m-0 flex-grow-1 ms-5 mt-3 float-end span-publicacao-data fs-6'></span>
+
+			<div class="d-flex align-items-center headerPublicacao"></div>
 		</div>
 
-		<h5
-			class='p-3 m-0 bg-dark-subtle fw-normal py-4 text-break publicacao-texto'></h5>
+		<div class='p-3'>
+			<p class='m-0 publicacao-texto text-break'></p>
+		</div>
+
+		<!-- IMAGEM -->
+		<div class="px-3 pb-3 text-center">
+			<img class="imagem img-fluid rounded-3" style="max-height: 400px; object-fit: cover;">
+		</div>
+
 		<hr class='m-0'>
 
-		<div class="w-50 h-25 mx-auto text-center">
-			<img class="imagem img-fluid rounded-3 p-3">
+		<!-- COMENTÁRIOS -->
+		<div class='bg-body-secondary px-3 py-2 small fw-semibold'>
+			Comentários:
 		</div>
 
-		<div class='bg-body-secondary px-3 pt-3 pb-2'>Comentários:</div>
+		<div class='comentariosDiv bg-body-secondary'></div>
 
-		<div class='comentariosDiv p-1 bg-body-secondary'></div>
-
-		<div class='adicionarComentario d-flex align-items-stretch w-100'>
+		<div class='adicionarComentario'>
 			<form class='d-flex w-100 adicionarComentarioForm'>
-				<input type='text' name='texto' maxlength='1000' required
-					placeholder='Digite seu comentário...' autocomplete='off'
-					class='p-2 border-dark border-opacity-50 flex-grow-1'
-					style='border-radius: 0 0 0 0.375rem'>
+
+				<input type='text'
+					name='texto'
+					maxlength='1000'
+					required
+					placeholder='Digite seu comentário...'
+					autocomplete='off'
+					class='form-control rounded-0 border-0'>
+
 				<button type='submit'
-					class='btn-submit px-3 bg-info-subtle bg-gradient border border-black border-opacity-10 fs-6 custom-rounded adicionarComentarioButton'>
-					<i class='bi bi-send fs-5'></i>
+					class='btn btn-info px-3'>
+					<i class='bi bi-send'></i>
 				</button>
+
 			</form>
 		</div>
+
 	</div>
 </template>
 
 
 <template id='comentario-template'>
-	<div
-		class="comentario bg-body-tertiary border-top border-bottom border-start border-black border-opacity-10 p-3">
+	<div class="comentario bg-body-tertiary border-top p-3">
 
-		<div class="row g-3 align-items-start">
+		<div class="d-flex gap-2">
 
-			<div class="col-auto">
-				<img class="imagemPerfilComentario rounded-circle"
-					style="width: 4vw; aspect-ratio: 1/1; object-fit: cover;">
-			</div>
+			<img class="imagemPerfilComentario rounded-circle"
+				style="width: 36px; height: 36px; object-fit: cover;">
 
-			<div class="col">
-				<div class="d-flex justify-content-between">
-					<span class="comentarioUsername fw-bold"></span> <span
-						class="comentarioData fw-light text-nowrap text-secondary ms-2"></span>
+			<div class="flex-grow-1">
+
+				<div class="d-flex justify-content-between flex-wrap">
+					<span class="comentarioUsername fw-bold"></span>
+					<span class="comentarioData text-secondary small"></span>
 				</div>
 
 				<div class="comentarioTexto text-break mt-1"></div>
+
 			</div>
 
-			<div class="col-auto">
-				<div class="comentarioActions d-flex"></div>
-			</div>
+			<div class="comentarioActions d-flex align-items-start"></div>
 
 		</div>
 
@@ -90,15 +108,15 @@
 <template id='acoesPublicacaoTemplate'>
 	<div class='excluirPublicacao'>
 		<button type='submit'
-			class='p-2 border border-dark border-opacity-25 rounded-start-pill fs-6 bg-dark-subtle excluirPublicacaoButton ms-2'>
-			<i class='bi bi-trash fs-5 px-1'></i>
+			class='p-1 p-md-2 border border-dark border-opacity-25 rounded-start-pill bg-dark-subtle excluirPublicacaoButton ms-1 ms-md-2'>
+			<i class='bi bi-trash fs-6 fs-md-5 px-1'></i>
 		</button>
 	</div>
 
 	<div class='editarPublicacao'>
 		<button type='submit'
-			class='p-2 border border-dark border-opacity-25 rounded-end-pill fs-6 bg-dark-subtle editarPublicacaoButton'>
-			<i class='bi bi-pencil fs-5 px-1'></i>
+			class='p-1 p-md-2 border border-dark border-opacity-25 rounded-end-pill bg-dark-subtle editarPublicacaoButton'>
+			<i class='bi bi-pencil fs-6 fs-md-5 px-1'></i>
 		</button>
 	</div>
 </template>
@@ -106,27 +124,25 @@
 <template id='curtirPublicacaoTemplate'>
 	<div class='curtirPublicacao'>
 		<button type='submit'
-			class='p-2 border border-dark border-opacity-25 rounded-pill fs-6 bg-dark-subtle curtirPublicacaoButton'>
-			<span class='numLikes fs-5 px-1'></span> <i
-				class='bi bi-heart fs-5 pe-1'></i>
+			class='p-1 p-md-2 border border-dark border-opacity-25 rounded-pill fs-6 bg-dark-subtle curtirPublicacaoButton'>
+			<span class='numLikes fs-6 px-1'></span>
+			<i class='bi bi-heart fs-6 fs-md-5'></i>
 		</button>
 	</div>
 </template>
 
 <template id='acoesTopicoTemplate'>
-	<div class='d-flex float-start me-2'>
-		<div class='excluirTopico d-flex align-items-stretch'>
-			<button type='submit'
-				class='p-1 border border-dark border-opacity-25 rounded-start-pill fs-6 bg-dark-subtle excluirTopicoButton'>
-				<i class='bi bi-trash fs-6 px-1'></i>
-			</button>
-		</div>
+	<div class='d-flex align-items-center me-2'>
 
-		<div class='editarTopico d-flex align-items-stretch'>
-			<button type='submit'
-				class='p-1 border border-dark border-opacity-25 rounded-end-pill fs-6 bg-dark-subtle editarTopicoButton'>
-				<i class='bi bi-pencil fs-6 px-1'></i>
-			</button>
-		</div>
+		<button type='button'
+			class='p-1 p-md-2 border border-dark border-opacity-25 rounded-start-pill bg-dark-subtle excluirTopicoButton'>
+			<i class='bi bi-trash fs-6 fs-md-5'></i>
+		</button>
+
+		<button type='button'
+			class='p-1 p-md-2 border border-dark border-opacity-25 rounded-end-pill bg-dark-subtle editarTopicoButton'>
+			<i class='bi bi-pencil fs-6 fs-md-5'></i>
+		</button>
+
 	</div>
 </template>

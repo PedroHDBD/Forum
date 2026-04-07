@@ -20,7 +20,8 @@
 	href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
 	rel="stylesheet">
 </head>
-<body class="p-3 d-flex justify-content-center align-items-center" style="height: 100vh;">
+<body class="p-3 d-flex justify-content-center align-items-center"
+	style="height: 100vh;">
 
 	<%
 	if (session != null) {
@@ -32,13 +33,15 @@
 		<h2 class="text-center mb-4">Cadastro</h2>
 		<form action="/ProjetoTCC/api/CadastroControl" method="post">
 			<div class="mb-3">
-				<label for="nome" class="form-label">Nome:</label>
-                <input type="text" class="form-control" id="nome" name="nome" required autocomplete="off">
+				<label for="nome" class="form-label">Nome:</label> <input
+					type="text" class="form-control" id="nome" name="nome" required
+					autocomplete="off">
 			</div>
 			<div class="mb-3">
-				<label for="username" class="form-label">Nome de usuário:</label>
-                <input type="text" class="form-control" id="nome" name="username" required autocomplete="off">
-                <%
+				<label for="username" class="form-label">Nome de usuário:</label> <input
+					type="text" class="form-control" id="nome" name="username" required
+					autocomplete="off">
+				<%
 				if ("1".equals(request.getParameter("erroUsername"))) {
 				%>
 				<span class="text-danger">Nome de usuário já existe</span>
@@ -47,8 +50,9 @@
 				%>
 			</div>
 			<div class="mb-3">
-				<label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" required autocomplete="off">
+				<label for="email" class="form-label">Email:</label> <input
+					type="email" class="form-control" id="email" name="email" required
+					autocomplete="off">
 				<%
 				if ("1".equals(request.getParameter("erroEmail"))) {
 				%>
@@ -58,8 +62,9 @@
 				%>
 			</div>
 			<div class="mb-3">
-				<label for="senha" class="form-label">Senha:</label>
-                <input type="password" class="form-control" id="senha" name="senha" required autocomplete="off">
+				<label for="senha" class="form-label">Senha:</label> <input
+					type="password" class="form-control" id="senha" name="senha"
+					required autocomplete="off">
 			</div>
 			<button type="submit" class="btn btn-primary w-100">Cadastrar</button>
 		</form>

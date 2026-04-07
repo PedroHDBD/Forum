@@ -29,6 +29,10 @@ window.PublicacaoService = (function() {
 
 		publicacoes.forEach(publicacao => {
 
+			const $col = $(`
+				<div class="col-12 col-md-10 col-lg-10 col-xl-10 p-4"></div>
+			`);
+
 			const $publicacao = $(template.cloneNode(true)).find(".publicacao");
 
 			preencherPublicacao($publicacao, publicacao);
@@ -37,7 +41,8 @@ window.PublicacaoService = (function() {
 			configurarAdicaoComentario($publicacao, publicacao.idPublicacao, idUsuario);
 			carregarComentarios($publicacao, publicacao, idUsuario);
 
-			$lista.append($publicacao);
+			$col.append($publicacao);
+			$lista.append($col);
 		});
 	}
 
@@ -80,7 +85,7 @@ window.PublicacaoService = (function() {
 		const $botao = $clone.find(".curtirPublicacaoButton");
 		const $icone = $botao.find("i");
 		const $numLikes = $clone.find(".numLikes");
-		
+
 		$.ajax({
 			url: "/ProjetoTCC/api/LikeControl",
 			type: "GET",
@@ -235,14 +240,14 @@ window.PublicacaoService = (function() {
 	}
 
 	function configurarLikesComentario($comentario, idComentario) {
-		
+
 		const template = document.querySelector("#curtirComentarioTemplate").content;
 		const $clone = $(template.cloneNode(true));
 
 		const $botao = $clone.find(".curtirComentarioButton");
 		const $icone = $botao.find("i");
 		const $numLikes = $clone.find(".numLikesComentario");
-		
+
 		$.ajax({
 			url: "/ProjetoTCC/api/LikeControl",
 			type: "GET",

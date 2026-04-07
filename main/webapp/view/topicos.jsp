@@ -32,45 +32,64 @@
 	%>
 
 	<div class="container-fluid my-3 px-3">
-		<div class="bg-black bg-gradient text-white p-3 rounded-3 d-flex align-items-center position-relative w-100">
+		<div
+			class="bg-black bg-gradient text-white p-3 rounded-3 d-flex flex-column"
+			id="header">
 
-			<button type="button" class="bg-dark bg-gradient rounded-2 text-white border border-secondary border-opacity-50"
-				onclick="window.location.href = 'foruns.jsp'">
-				<i class="bi bi-arrow-left px-2 fs-4"></i>
-			</button>
+			<div class="d-flex align-items-center">
 
-			<button type="button" class="bg-dark bg-gradient rounded-2 text-white ms-2 border border-secondary border-opacity-50"
-				onclick="window.location.href = './adicionarTopico.jsp?idForum=<%=idForum%>'">
-				<i class="bi bi-plus-lg fs-4"></i>
-			</button>
+				<div class="d-flex gap-2">
+					<button type="button"
+						class="bg-dark rounded-2 text-white border border-secondary border-opacity-50 p-1 p-md-2"
+						id="voltar" onclick="window.location.href = 'foruns.jsp'">
+						<i class="bi bi-arrow-left fs-6 fs-md-5"></i>
+					</button>
 
-			<h5 class="m-0 position-absolute start-50 translate-middle-x w-auto" id='h5'> - Tópicos</h5>
+					<button type="button"
+						class="bg-dark rounded-2 text-white border border-secondary border-opacity-50 p-1 p-md-2"
+						onclick="window.location.href = './adicionarTopico.jsp?idForum=<%=idForum%>'">
+						<i class="bi bi-plus-lg fs-6 fs-md-5"></i>
+					</button>
+				</div>
 
-			<button class="bg-dark bg-gradient rounded-2 text-white border border-secondary border-opacity-50 ms-auto" style="height: 3rem;" type="button" data-bs-toggle="offcanvas"
-				data-bs-target="#offcanvasRight">
-				<i class="bi bi-list px-2 fs-4"></i>
-			</button>
-			
+				<div class="d-flex ms-auto align-items-center gap-1" id="acoes">
+					<button
+						class="bg-dark rounded-2 text-white border border-secondary border-opacity-50 p-1 p-md-2"
+						type="button" data-bs-toggle="offcanvas"
+						data-bs-target="#offcanvasRight">
+						<i class="bi bi-list fs-6 fs-md-5"></i>
+					</button>
+				</div>
+
+			</div>
+
+			<h5 class="mb-0 text-center fw-medium fs-5 text-break" id='h5'></h5>
+
 		</div>
 	</div>
 
 	<div class="container-fluid mt-4">
-		<div id="topico-list" class="row" data-idforum="<%=idForum%>" data-idusuario="<%=idUsuario%>">Carregando tópicos...</div>
+		<div id="topico-list" class="row" data-idforum="<%=idForum%>"
+			data-idusuario="<%=idUsuario%>">Carregando tópicos...</div>
 	</div>
 
 	<template id="topico-template">
-		<div class="col-12 col-md-10 col-lg-8 col-xl-6 mb-3 px-3 d-flex divTopico me-1">
+		<div
+			class="col-12 col-md-10 col-lg-8 col-xl-6 mb-3 px-3 d-flex divTopico me-1">
 
-				<button type="submit"
-					class="d-flex justify-content-center align-items-center flex-grow-1 text-start px-4 py-0 botaoSubmit fs-5 rounded-start-pill bg-secondary-subtle shadow-sm border border-dark border-opacity-25">
-					
-					<span class="flex-grow-1 fs-5 py-2 px-3 titulo-topico"></span>
-					<span class="fs-6 autor-topico"></span>
-					<span class="fs-6 px-3">-</span>
-					<span class="fs-6 data-topico text-nowrap"></span>
-				</button>
-				
-			</div>
+
+			<button type="submit"
+				class="d-flex flex-column justify-content-center flex-grow-1 text-start px-4 py-0 botaoSubmit shadow-sm border border-dark border-opacity-25 bg-secondary-subtle">
+
+				<span class="titulo-topico"></span>
+
+				<div class="d-flex align-items-center gap-2 small text-muted mt-1">
+					<span class="autor-topico"></span> <span>-</span> <span
+						class="data-topico text-nowrap"></span>
+				</div>
+
+			</button>
+		</div>
 	</template>
 
 	<template id="autor-botoes-template">
@@ -89,27 +108,27 @@
 		</div>
 	</template>
 
-	<div class="offcanvas offcanvas-end h-100" style="width: 15rem"
-		tabindex="-1" id="offcanvasRight">
-		<div
-			class="offcanvas-body d-flex align-items-center justify-content-center">
-			<ul class="list-group w-75">
-				<li class="list-group-item text-center py-2 rounded-3 "><a
-					href="feed.jsp"> <i class="bi bi-house px-2 fs-4"></i>Feed
-				</a></li>
-				<br>
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="perfil.jsp"> <i class="bi bi-person-circle px-2 fs-4"></i>Perfil
-				</a></li>
-				<br>
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="foruns.jsp"> <i class="bi bi-book px-2 fs-4"></i>Fóruns
-				</a></li>
-				<br>
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="login.jsp"> <i class="bi bi-escape px-2 fs-4"></i>Sair
-				</a></li>
-			</ul>
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
+		<div class="offcanvas-body p-3">
+
+			<div class="list-group list-group-flush">
+
+				<a href="feed.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3">
+					<i class="bi bi-house fs-5"></i> <span>Feed</span>
+				</a> <a href="perfil.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-2">
+					<i class="bi bi-person-circle fs-5"></i> <span>Perfil</span>
+				</a> <a href="foruns.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-2">
+					<i class="bi bi-book fs-5"></i> <span>Fóruns</span>
+				</a> <a href="login.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-4 text-danger">
+					<i class="bi bi-box-arrow-right fs-5"></i> <span>Sair</span>
+				</a>
+
+			</div>
+
 		</div>
 	</div>
 

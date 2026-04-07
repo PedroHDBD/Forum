@@ -37,136 +37,163 @@
 	}
 	%>
 
-	<div class="main-wrapper">
+	<div class="container-fluid my-3 px-3">
+		<div
+			class="bg-black bg-gradient text-white p-3 rounded-3 d-flex flex-column"
+			id="header">
 
-		<div class="content-section">
 
-			<div
-				class="bg-black bg-gradient text-white p-3 rounded-3 d-flex justify-content-between align-items-center">
-				<div class="d-flex align-items-center">
-					<button type="submit"
-						class="bg-dark bg-gradient rounded-2 text-white border border-secondary border-opacity-50"
-						onclick="window.location.href = 'foruns.jsp'">
-						<i class="bi bi-house px-2 fs-4"></i>
+			<div class="d-flex align-items-center">
+
+				<div class="d-flex gap-2">
+					<button type="button"
+						class="bg-dark rounded-2 text-white border border-secondary border-opacity-50 p-1 p-md-2"
+						id="voltar" onclick="window.location.href = 'feed.jsp'">
+						<i class="bi bi-arrow-left fs-6 fs-md-5"></i>
 					</button>
-
 				</div>
 
-				<h5 class="m-0 position-absolute start-50 translate-middle-x"
-					id='h5'>Perfil</h5>
+				<div class="d-flex ms-auto align-items-center gap-1" id="acoes">
+					<button
+						class="bg-dark rounded-2 text-white border border-secondary border-opacity-50 p-1 p-md-2"
+						type="button" data-bs-toggle="offcanvas"
+						data-bs-target="#offcanvasRight">
+						<i class="bi bi-list fs-6 fs-md-5"></i>
+					</button>
+				</div>
 
 			</div>
 
-			<div class="d-flex mt-3">
+			<h5 class="mb-0 text-center fw-medium fs-5 h5Header">Perfil</h5>
+
+		</div>
+	</div>
+
+	<div class="container mt-3">
+		<div class="row align-items-center">
+
+			<!-- FOTO -->
+			<div
+				class="col-12 col-md-3 d-flex justify-content-center mb-3 mb-md-0">
 				<div class="card rounded-circle overflow-hidden"
-					style="width: 15vw; aspect-ratio: 1/1; cursor: pointer;"
+					style="width: 150px; aspect-ratio: 1/1; cursor: pointer;"
 					id="cardImagemUsuario">
+
 					<form id="atualizarFoto" enctype="multipart/form-data">
 						<input type="file" id="inputImagem" name="imagem" accept="image/*"
-							hidden> <img id="imagem" class="foto-perfil">
+							hidden> <img id="imagem"
+							class="w-100 h-100 object-fit-cover">
 					</form>
-				</div>
-
-
-				<div class="modal fade" id="modalCrop" tabindex="-1"
-					aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-lg">
-						<div class="modal-content">
-
-							<div class="modal-header">
-								<h5 class="modal-title">Editar foto de perfil</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-							</div>
-
-							<div class="modal-body">
-								<div class="crop-container">
-									<img id="cropperImg" class="img-fluid">
-								</div>
-							</div>
-
-							<div class="modal-footer">
-								<button id="cropCancel" class="btn btn-secondary"
-									data-bs-dismiss="modal">Cancelar</button>
-								<button id="cropConfirm" class="btn btn-primary">Confirmar</button>
-							</div>
-
-						</div>
-					</div>
-				</div>
-
-				<div class="d-flex flex-column justify-content-between p-3 w-100">
-
-					<div class='d-flex justify-content-between w-50'>
-						<div
-							class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
-							<span class='mx-2 fw-bold'>Nome: <span id='nome'
-								class='fw-bolder'></span></span>
-						</div>
-						<span class='form-editar editarUsername'>
-							<button type="submit"
-								class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
-								<i class="bi bi-pencil fs-5 px-1"></i>
-							</button>
-						</span>
-					</div>
-
-					<div class='d-flex justify-content-between w-50'>
-						<div
-							class='bg-secondary-subtle w-100 rounded-start-pill p-2 d-flex justify-content-between align-items-center m-0'>
-							<span class='mx-2 fw-bold'>Nome de usuário: <span
-								id='username' class='fw-bolder'></span></span>
-						</div>
-						<span class='form-editar editarUsername'>
-							<button type="submit"
-								class="btn bg-dark-subtle border-opacity-25 rounded-end-pill editarUsernameButton">
-								<i class="bi bi-pencil fs-5 px-1"></i>
-							</button>
-						</span>
-					</div>
-
-					<div
-						class='bg-secondary-subtle w-50 rounded-pill p-2 d-flex justify-content-between'>
-						<span class='mx-2 fw-bold'>Entrou em: <span id='data'
-							class='fw-bolder'></span></span>
-					</div>
 
 				</div>
 			</div>
-		</div>
-		<div class="sidebar-trigger-area px-3" id="menuHoverArea">
-			<button
-				class="bg-dark bg-gradient rounded-2 text-white border border-secondary border-opacity-50"
-				style="height: 3rem;" type="button" data-bs-toggle="offcanvas"
-				data-bs-target="#offcanvasRight">
-				<i class="bi bi-list px-2 fs-4"></i>
-			</button>
+
+			<!-- MODAL CROP -->
+			<div class="modal fade" id="modalCrop" tabindex="-1"
+				aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-lg">
+					<div class="modal-content">
+
+						<div class="modal-header">
+							<h5 class="modal-title">Editar foto de perfil</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+						</div>
+
+						<div class="modal-body">
+							<div class="crop-container text-center">
+								<img id="cropperImg" class="img-fluid">
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button id="cropCancel" class="btn btn-secondary"
+								data-bs-dismiss="modal">Cancelar</button>
+							<button id="cropConfirm" class="btn btn-primary">
+								Confirmar</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- DADOS -->
+			<div class="col-12 col-md-9">
+
+				<!-- NOME -->
+				<div class="row mb-2 g-0 align-items-stretch">
+					<div class="col-10">
+						<div
+							class="bg-secondary-subtle rounded-start-pill p-2 d-flex align-items-center h-100">
+							<span class="fw-bold"> Nome: <span id="nome"
+								class="fw-bolder"></span>
+							</span>
+						</div>
+					</div>
+					<div class="col-2 d-flex">
+						<button type="button"
+							class="btn bg-dark-subtle w-100 h-100 rounded-end-pill editarNomeButton">
+							<i class="bi bi-pencil"></i>
+						</button>
+					</div>
+				</div>
+
+				<!-- USERNAME -->
+								<div class="row mb-2 g-0 align-items-stretch">
+					<div class="col-10">
+						<div
+							class="bg-secondary-subtle rounded-start-pill p-2 d-flex align-items-center h-100">
+							<span class="fw-bold"> Nome de usuário: <span id="username"
+								class="fw-bolder"></span>
+							</span>
+						</div>
+					</div>
+					<div class="col-2 d-flex">
+						<button type="button"
+							class="btn bg-dark-subtle w-100 h-100 rounded-end-pill editarUsernameButton">
+							<i class="bi bi-pencil"></i>
+						</button>
+					</div>
+				</div>
+
+				<!-- DATA -->
+				<div class="row">
+					<div class="col-12 col-md-6">
+						<div class="bg-secondary-subtle rounded-pill p-2">
+							<span class="fw-bold"> Entrou em: <span id="data"
+								class="fw-bolder"></span>
+							</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 
-<div class="offcanvas offcanvas-end h-100" style="width: 15rem"
-		tabindex="-1" id="offcanvasRight">
-		<div
-			class="offcanvas-body d-flex align-items-center justify-content-center">
-			<ul class="list-group w-75">
-				<li class="list-group-item text-center py-2 rounded-3 "><a
-					href="feed.jsp"> <i class="bi bi-house px-2 fs-4"></i>Feed
-				</a></li>
-				<br>
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="perfil.jsp"> <i class="bi bi-person-circle px-2 fs-4"></i>Perfil
-				</a></li>
-				<br>
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="foruns.jsp"> <i class="bi bi-book px-2 fs-4"></i>Fóruns
-				</a></li>
-				<br>
-				<li class="list-group-item text-center py-2 rounded-3"><a
-					href="login.jsp"> <i class="bi bi-escape px-2 fs-4"></i>Sair
-				</a></li>
-			</ul>
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">
+		<div class="offcanvas-body p-3">
+
+			<div class="list-group list-group-flush">
+
+				<a href="feed.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3">
+					<i class="bi bi-house fs-5"></i> <span>Feed</span>
+				</a> <a href="perfil.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-2">
+					<i class="bi bi-person-circle fs-5"></i> <span>Perfil</span>
+				</a> <a href="foruns.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-2">
+					<i class="bi bi-book fs-5"></i> <span>Fóruns</span>
+				</a> <a href="login.jsp"
+					class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 rounded-3 mt-4 text-danger">
+					<i class="bi bi-box-arrow-right fs-5"></i> <span>Sair</span>
+				</a>
+
+			</div>
+
 		</div>
 	</div>
-	
+
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
