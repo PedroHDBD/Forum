@@ -11,8 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "GET",
             dataType: "json",
             success: function(usuario) {
-                document.getElementById('nome').textContent = usuario.nome;
-                document.getElementById('username').textContent = usuario.username;
+                document.getElementById('nome').value = usuario.nome;
+                document.getElementById('username').value = usuario.username;
+				document.getElementById('data').textContent = usuario.data;
+				
+				console.log(usuario.data);
+
 
                 $("#imagem").attr("src", "/ProjetoTCC/" + usuario.foto).show();
             },
@@ -21,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+	
 
     document.getElementById("cardImagemUsuario").addEventListener("click", () => {
         input.click();

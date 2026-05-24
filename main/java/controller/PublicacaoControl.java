@@ -51,99 +51,108 @@ public class PublicacaoControl extends HttpServlet {
 
 		if ("listarPublicacoes".equals(acao)) {
 
-		    String idTopico = request.getParameter("idTopico");
+			String idTopico = request.getParameter("idTopico");
 
-		    if (idTopico == null || idTopico.isEmpty()) {
-		        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "idTopico inválido");
-		        return;
-		    }
+			if (idTopico == null || idTopico.isEmpty()) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "idTopico inválido");
+				return;
+			}
 
-		    String sql =
-		        "SELECT p.idPublicacao, p.texto, p.data, p.imagem, p.numLikes, p.numComentarios, " +
-		        "u.idUsuario, u.nome, u.username, u.foto " +
-		        "FROM Publicacao p " +
-		        "JOIN Usuario u ON p.idUsuario = u.idUsuario " +
-		        "WHERE p.idTopico = " + idTopico + " " +
-		        "ORDER BY p.data DESC";
+			int limit = 5;
+			int offset = 0;
 
-		    DBQuery db = new DBQuery();
-		    ResultSet rs = db.query(sql);
+			try {
+				limit = Integer.parseInt(request.getParameter("limit"));
+				offset = Integer.parseInt(request.getParameter("offset"));
+			} catch (Exception e) {
+			}
+			String sql = "SELECT p.idPublicacao, p.texto, p.data, p.imagem, p.numLikes, p.numComentarios, "
+					+ "u.idUsuario, u.nome, u.username, u.foto " + "FROM Publicacao p "
+					+ "JOIN Usuario u ON p.idUsuario = u.idUsuario " + "WHERE p.idTopico = " + idTopico + " "
+					+ "ORDER BY p.data DESC " + "LIMIT " + limit + " OFFSET " + offset;
 
-		    if (rs == null) {
-		        System.out.println("\n\n\nERRO: ResultSet null\n\n\n");
-		        return;
-		    }
+			DBQuery db = new DBQuery();
+			ResultSet rs = db.query(sql);
 
-		    ArrayList<Publicacao> lista = new ArrayList<>();
+			if (rs == null) {
+				System.out.println("\n\n\nERRO: ResultSet null\n\n\n");
+				return;
+			}
 
-		    try {
-		        while (rs.next()) {
-		            Publicacao pub = new Publicacao();
-		            pub.setIdPublicacao(rs.getInt("idPublicacao"));
-		            pub.setTexto(rs.getString("texto"));
-		            pub.setData(rs.getString("data"));
-		            pub.setImagem(rs.getString("imagem"));
-		            pub.setNumLikes(rs.getInt("numLikes"));
-		            pub.setNumComentarios(rs.getInt("numComentarios"));
+			ArrayList<Publicacao> lista = new ArrayList<>();
 
-		            Usuario user = new Usuario();
-		            user.setIdUsuario(rs.getInt("idUsuario"));
-		            user.setNome(rs.getString("nome"));
-		            user.setUsername(rs.getString("username"));
-		            user.setImagem(rs.getString("foto"));
+			try {
+				while (rs.next()) {
+					Publicacao pub = new Publicacao();
+					pub.setIdPublicacao(rs.getInt("idPublicacao"));
+					pub.setTexto(rs.getString("texto"));
+					pub.setData(rs.getString("data"));
+					pub.setImagem(rs.getString("imagem"));
+					pub.setNumLikes(rs.getInt("numLikes"));
+					pub.setNumComentarios(rs.getInt("numComentarios"));
 
-		            pub.setUsuario(user);
-		            lista.add(pub);
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-		    
-		    response.getWriter().write(new Gson().toJson(lista));
+					Usuario user = new Usuario();
+					user.setIdUsuario(rs.getInt("idUsuario"));
+					user.setNome(rs.getString("nome"));
+					user.setUsername(rs.getString("username"));
+					user.setImagem(rs.getString("foto"));
+
+					pub.setUsuario(user);
+					lista.add(pub);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			response.getWriter().write(new Gson().toJson(lista));
 		}
 
 		if ("BuscarTextoPublicacao".equals(acao)) {
 
-		    String idPublicacao = request.getParameter("idPublicacao");
+			String idPublicacao = request.getParameter("idPublicacao");
 
-		    if (idPublicacao == null || idPublicacao.isEmpty()) return;
+			if (idPublicacao == null || idPublicacao.isEmpty())
+				return;
 
-		    DBQuery db = new DBQuery("Publicacao", "texto", "idPublicacao");
-		    ResultSet rs = db.select("idPublicacao = " + idPublicacao);
+			DBQuery db = new DBQuery("Publicacao", "texto", "idPublicacao");
+			ResultSet rs = db.select("idPublicacao = " + idPublicacao);
 
-		    if (rs == null) return;
+			if (rs == null)
+				return;
 
-		    try {
-		        if (rs.next()) {
-		            Publicacao p = new Publicacao();
-		            p.setTexto(rs.getString("texto"));
-		            response.getWriter().write(new Gson().toJson(p));
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
+			try {
+				if (rs.next()) {
+					Publicacao p = new Publicacao();
+					p.setTexto(rs.getString("texto"));
+					response.getWriter().write(new Gson().toJson(p));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		if ("BuscarNumLikes".equals(acao)) {
 
-		    String idPublicacao = request.getParameter("id");
+			String idPublicacao = request.getParameter("id");
 
-		    if (idPublicacao == null || idPublicacao.isEmpty()) return;
+			if (idPublicacao == null || idPublicacao.isEmpty())
+				return;
 
-		    DBQuery db = new DBQuery("Publicacao", "numLikes", "idPublicacao");
-		    ResultSet rs = db.select("idPublicacao = " + idPublicacao);
+			DBQuery db = new DBQuery("Publicacao", "numLikes", "idPublicacao");
+			ResultSet rs = db.select("idPublicacao = " + idPublicacao);
 
-		    if (rs == null) return;
+			if (rs == null)
+				return;
 
-		    try {
-		        if (rs.next()) {
-		            Publicacao p = new Publicacao();
-		            p.setNumLikes(rs.getInt("numLikes"));
-		            response.getWriter().write(new Gson().toJson(p));
-		        }
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
+			try {
+				if (rs.next()) {
+					Publicacao p = new Publicacao();
+					p.setNumLikes(rs.getInt("numLikes"));
+					response.getWriter().write(new Gson().toJson(p));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

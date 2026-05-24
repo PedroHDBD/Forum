@@ -1,8 +1,10 @@
 <template id='publicacao-template'>
-	<div class='publicacao bg-dark-subtle rounded-3 shadow h-100 d-flex flex-column'>
+	<div
+		class='publicacao bg-dark-subtle rounded-3 shadow h-100 d-flex flex-column'>
 
 		<!-- HEADER -->
-		<div class='p-3 bg-dark bg-gradient text-white d-flex align-items-center justify-content-between rounded-top'>
+		<div
+			class='p-3 bg-dark bg-gradient text-white d-flex align-items-center justify-content-between rounded-top'>
 
 			<div class="d-flex align-items-center gap-2">
 
@@ -10,8 +12,8 @@
 					style="width: 48px; height: 48px; object-fit: cover;">
 
 				<div class="d-flex flex-column">
-					<span class='span-publicacao-autor fw-semibold'></span>
-					<span class='span-publicacao-data text-light small'></span>
+					<span class='span-publicacao-autor fw-semibold'></span> <span
+						class='span-publicacao-data text-light small'></span>
 				</div>
 
 			</div>
@@ -25,31 +27,32 @@
 
 		<!-- IMAGEM -->
 		<div class="px-3 pb-3 text-center">
-			<img class="imagem img-fluid rounded-3" style="max-height: 400px; object-fit: cover;">
+			<img class="imagem img-fluid rounded-3"
+				style="max-height: 400px; object-fit: cover;">
 		</div>
 
 		<hr class='m-0'>
 
 		<!-- COMENTÁRIOS -->
 		<div class='bg-body-secondary px-3 py-2 small fw-semibold'>
-			Comentários:
-		</div>
+			Comentários:</div>
 
 		<div class='comentariosDiv bg-body-secondary'></div>
-
+		
+		<div class="bg-body-secondary text-center py-2 verMaisContainer d-none">
+			<button type="button"
+				class="btn btn-sm btn-outline-secondary verMaisComentariosButton">
+				Ver mais comentários</button>
+		</div>
+		
 		<div class='adicionarComentario'>
 			<form class='d-flex w-100 adicionarComentarioForm'>
 
-				<input type='text'
-					name='texto'
-					maxlength='1000'
-					required
-					placeholder='Digite seu comentário...'
-					autocomplete='off'
+				<input type='text' name='texto' maxlength='1000' required
+					placeholder='Digite seu comentário...' autocomplete='off'
 					class='form-control rounded-0 border-0'>
 
-				<button type='submit'
-					class='btn btn-info px-3'>
+				<button type='submit' class='btn btn-info px-3'>
 					<i class='bi bi-send'></i>
 				</button>
 
@@ -71,8 +74,8 @@
 			<div class="flex-grow-1">
 
 				<div class="d-flex justify-content-between flex-wrap">
-					<span class="comentarioUsername fw-bold"></span>
-					<span class="comentarioData text-secondary small"></span>
+					<span class="comentarioUsername fw-bold"></span> <span
+						class="comentarioData text-secondary small"></span>
 				</div>
 
 				<div class="comentarioTexto text-break mt-1"></div>
@@ -125,8 +128,8 @@
 	<div class='curtirPublicacao'>
 		<button type='submit'
 			class='p-1 p-md-2 border border-dark border-opacity-25 rounded-pill fs-6 bg-dark-subtle curtirPublicacaoButton'>
-			<span class='numLikes fs-6 px-1'></span>
-			<i class='bi bi-heart fs-6 fs-md-5'></i>
+			<span class='numLikes fs-6 px-1'></span> <i
+				class='bi bi-heart fs-6 fs-md-5'></i>
 		</button>
 	</div>
 </template>

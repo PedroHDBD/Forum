@@ -21,14 +21,12 @@ import model.Usuario;
 
 @WebServlet("/api/UsuarioControl")
 
-@MultipartConfig(
-	    fileSizeThreshold = 1024 * 1024,   // 1MB
-	    maxFileSize = 5 * 1024 * 1024,     // 5MB
-	    maxRequestSize = 6 * 1024 * 1024   // 6MB
-	)
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, // 1MB
+		maxFileSize = 5 * 1024 * 1024, // 5MB
+		maxRequestSize = 6 * 1024 * 1024 // 6MB
+)
 public class UsuarioControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 
 	public UsuarioControl() {
 		super();
@@ -49,7 +47,7 @@ public class UsuarioControl extends HttpServlet {
 			return;
 		}
 
-		DBQuery dbQuery = new DBQuery("Usuario", "nome, username, foto", "idUsuario");
+		DBQuery dbQuery = new DBQuery("Usuario", "nome, username, foto, data", "idUsuario");
 		ResultSet resultSet = dbQuery.select("idUsuario = " + idUsuario);
 
 		Usuario usuario = new Usuario();
@@ -59,6 +57,7 @@ public class UsuarioControl extends HttpServlet {
 				usuario.setNome(resultSet.getString("nome"));
 				usuario.setUsername(resultSet.getString("username"));
 				usuario.setImagem(resultSet.getString("foto"));
+				usuario.setData(resultSet.getTimestamp("data"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -75,6 +74,8 @@ public class UsuarioControl extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
+		String acao = request.getParameter("acao");
+
 		Integer idUsuario = (Integer) request.getSession().getAttribute("idUsuario");
 
 		if (idUsuario == null) {
@@ -82,35 +83,57 @@ public class UsuarioControl extends HttpServlet {
 			return;
 		}
 
-		Part imagemPart = request.getPart("imagem");
-		String caminhoImagem = null;
+		if ("editarNome".equals(acao)) {
+			String nome = request.getParameter("nome");
 
-		if (imagemPart != null && imagemPart.getSize() > 0) {
-
-			if (imagemPart.getSize() > (5 * 1024 * 1024)) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				response.setContentType("application/json");
-				response.getWriter().write("{\"erro\":\"A imagem deve ter no máximo 5MB.\"}");
-				return;
-			}
-
-			String nomeArquivo = UUID.randomUUID().toString() + "_" + imagemPart.getSubmittedFileName();
-			String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator
-					+ "usuarios";
-
-			File uploadDir = new File(uploadPath);
-			if (!uploadDir.exists())
-				uploadDir.mkdirs();
-
-			imagemPart.write(uploadPath + File.separator + nomeArquivo);
-			caminhoImagem = "uploads/usuarios/" + nomeArquivo;
-
-			DBQuery dbQuery = new DBQuery("Usuario", "foto, idUsuario", "idUsuario");
-			String[] valores = { caminhoImagem, String.valueOf(idUsuario) };
-
-			dbQuery.update(valores);
-
+			DBQuery query = new DBQuery("Usuario", "nome, idUsuario", "idUsuario");
+			String[] usuario = { nome, String.valueOf(idUsuario) };
+			
+			query.update(usuario);
 			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().write("{}");
+			
+		} else if ("editarUsername".equals(acao)) {
+			String username = request.getParameter("username");
+
+			DBQuery query = new DBQuery("Usuario", "username, idUsuario", "idUsuario");
+			String[] usuario = { username, String.valueOf(idUsuario) };
+			query.update(usuario);
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.getWriter().write("{}");
+			
+		} else {
+
+			Part imagemPart = request.getPart("imagem");
+			String caminhoImagem = null;
+
+			if (imagemPart != null && imagemPart.getSize() > 0) {
+
+				if (imagemPart.getSize() > (5 * 1024 * 1024)) {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					response.setContentType("application/json");
+					response.getWriter().write("{\"erro\":\"A imagem deve ter no máximo 5MB.\"}");
+					return;
+				}
+
+				String nomeArquivo = UUID.randomUUID().toString() + "_" + imagemPart.getSubmittedFileName();
+				String uploadPath = getServletContext().getRealPath("") + File.separator + "uploads" + File.separator
+						+ "usuarios";
+
+				File uploadDir = new File(uploadPath);
+				if (!uploadDir.exists())
+					uploadDir.mkdirs();
+
+				imagemPart.write(uploadPath + File.separator + nomeArquivo);
+				caminhoImagem = "uploads/usuarios/" + nomeArquivo;
+
+				DBQuery dbQuery = new DBQuery("Usuario", "foto, idUsuario", "idUsuario");
+				String[] valores = { caminhoImagem, String.valueOf(idUsuario) };
+
+				dbQuery.update(valores);
+
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
 		}
 	}
 }

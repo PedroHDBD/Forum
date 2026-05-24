@@ -70,8 +70,16 @@
 	</div>
 
 	<div class="container-fluid">
-		<div class="row justify-content-center g-3" id="feed-publicacoes">Carregando
-			publicações...</div>
+
+		<div class="row justify-content-center g-3" id="feed-publicacoes">
+		</div>
+
+		<div id="feed-loader" class="text-center py-4">
+
+			<div class="spinner-border text-secondary" role="status"></div>
+
+		</div>
+
 	</div>
 
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">

@@ -39,6 +39,15 @@ public class FeedControl extends HttpServlet {
 			return;
 		}
 
+		int limit = 5;
+		int offset = 0;
+
+		try {
+			limit = Integer.parseInt(request.getParameter("limit"));
+			offset = Integer.parseInt(request.getParameter("offset"));
+		} catch (Exception e) {
+		}
+
 		String sql =
 			"SELECT p.idPublicacao, p.texto, p.data, p.imagem, p.numLikes, p.numComentarios, " +
 			"u.idUsuario, u.nome, u.username, u.foto " +
@@ -47,7 +56,8 @@ public class FeedControl extends HttpServlet {
 			"JOIN Topico t ON p.idTopico = t.idTopico " +
 			"JOIN UsuarioForum uf ON uf.idForum = t.idForum " +
 			"WHERE uf.idUsuario = " + idUsuario + " " +
-			"ORDER BY p.data DESC";
+			"ORDER BY p.data DESC " +
+			"LIMIT " + limit + " OFFSET " + offset;
 
 		DBQuery db = new DBQuery();
 		ResultSet rs = db.query(sql);

@@ -81,6 +81,11 @@
 	<div class="container">
 		<div id="publicacoes-list" class="row justify-content-center g-3">
 		</div>
+		<div id="feed-loader" class="text-center py-4">
+
+			<div class="spinner-border text-secondary" role="status"></div>
+
+		</div>
 	</div>
 
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight">

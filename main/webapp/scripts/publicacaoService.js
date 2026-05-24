@@ -8,24 +8,98 @@ window.PublicacaoService = (function() {
 			idUsuario
 		} = config;
 
-		$.ajax({
-			url: url,
-			method: "GET",
-			dataType: "json",
-			success: function(publicacoes) {
-				renderizarPublicacoes(publicacoes, containerSelector, idUsuario);
-			},
-			error: function(err) {
-				console.error("Erro ao carregar publicações:", err);
+		let offset = 0;
+		const limit = 5;
+
+		let carregando = false;
+		let acabou = false;
+
+		function carregarMaisPublicacoes() {
+
+			if (carregando || acabou) return;
+
+			carregando = true;
+
+			$.ajax({
+
+				url: url,
+
+				method: "GET",
+
+				dataType: "json",
+
+				data: {
+					limit: limit,
+					offset: offset
+				},
+
+				success: function(publicacoes) {
+
+					if (offset === 0) {
+						$(containerSelector).empty();
+					}
+
+					if (publicacoes.length === 0) {
+
+						acabou = true;
+
+						$("#feed-loader").hide();
+
+						return;
+					}
+
+					renderizarPublicacoes(
+						publicacoes,
+						containerSelector,
+						idUsuario
+					);
+
+					offset += publicacoes.length;
+
+					if (publicacoes.length < limit) {
+
+						acabou = true;
+
+						$("#feed-loader").hide();
+					}
+
+					carregando = false;
+				},
+
+				error: function(err) {
+
+					console.error(
+						"Erro ao carregar publicações:",
+						err
+					);
+
+					carregando = false;
+				}
+			});
+		}
+
+		const observer = new IntersectionObserver(entries => {
+
+			if (entries[0].isIntersecting) {
+
+				carregarMaisPublicacoes();
 			}
+
+		}, {
+			rootMargin: "300px"
 		});
+
+		observer.observe(
+			document.querySelector("#feed-loader")
+		);
+
+		carregarMaisPublicacoes();
 	}
 
 	function renderizarPublicacoes(publicacoes, containerSelector, idUsuario) {
 
 		const template = document.querySelector("#publicacao-template").content;
 		const $lista = $(containerSelector);
-		$lista.empty();
 
 		publicacoes.forEach(publicacao => {
 
@@ -64,6 +138,7 @@ window.PublicacaoService = (function() {
 
 		$publicacao.find(".fotoPerfil")
 			.attr("src", "/ProjetoTCC/" + publicacao.usuario.foto);
+
 	}
 
 	function formatarData(dataUTC) {
@@ -165,21 +240,61 @@ window.PublicacaoService = (function() {
 
 	function carregarComentarios($publicacao, publicacao, idUsuario) {
 
+		const comentariosDiv = $publicacao.find(".comentariosDiv");
+		const verMaisContainer = $publicacao.find(".verMaisContainer");
+		const botaoVerMais = $publicacao.find(".verMaisComentariosButton");
+
+		let offset = 0;
+		const limit = 4;
+		let carregando = false;
+
+		function buscarComentarios() {
+			if (carregando) return;
+			carregando = true;
+
+			$.get("/ProjetoTCC/api/ComentarioControl", {
+				acao: "ListarComentarios",
+				idPublicacao: publicacao.idPublicacao,
+				limit: limit,
+				offset: offset
+			}, function(comentarios) {
+
+				if (comentarios.length === 0) {
+					verMaisContainer.addClass("d-none");
+					carregando = false;
+					return;
+				}
+
+				comentariosDiv.show();
+				comentarios.forEach(comentario => {
+					renderizarComentario(
+						$publicacao,
+						comentario,
+						idUsuario
+					);
+
+				});
+				offset += comentarios.length;
+				if (comentarios.length < limit) {
+					verMaisContainer.addClass("d-none");
+
+				} else {
+					verMaisContainer.removeClass("d-none");
+				}
+				carregando = false;
+			});
+		}
+
 		if (publicacao.numComentarios <= 0) {
-			$publicacao.find(".comentariosDiv").hide();
+			comentariosDiv.hide();
+			verMaisContainer.addClass("d-none");
 			return;
 		}
 
-		$.get("/ProjetoTCC/api/ComentarioControl", {
-			acao: "ListarComentarios",
-			idPublicacao: publicacao.idPublicacao
-		}, function(comentarios) {
+		buscarComentarios();
 
-			comentarios.forEach(comentario => {
-
-				renderizarComentario($publicacao, comentario, idUsuario);
-
-			});
+		botaoVerMais.off("click").on("click", function() {
+			buscarComentarios();
 		});
 	}
 

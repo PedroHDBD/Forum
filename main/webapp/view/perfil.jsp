@@ -70,20 +70,23 @@
 	</div>
 
 	<div class="container mt-3">
-		<div class="row align-items-center">
+		<div class="row align-items-center d-flex justify-content-center">
 
 			<!-- FOTO -->
 			<div
 				class="col-12 col-md-3 d-flex justify-content-center mb-3 mb-md-0">
-				<div class="card rounded-circle overflow-hidden"
-					style="width: 150px; aspect-ratio: 1/1; cursor: pointer;"
-					id="cardImagemUsuario">
+				<div class="col-6 col-md-12">
 
-					<form id="atualizarFoto" enctype="multipart/form-data">
-						<input type="file" id="inputImagem" name="imagem" accept="image/*"
-							hidden> <img id="imagem"
-							class="w-100 h-100 object-fit-cover">
-					</form>
+					<div class="card rounded-circle overflow-hidden w-100"
+						style="aspect-ratio: 1/1; cursor: pointer;" id="cardImagemUsuario">
+
+						<form id="atualizarFoto" enctype="multipart/form-data">
+							<input type="file" id="inputImagem" name="imagem"
+								accept="image/*" hidden> <img id="imagem"
+								class="w-100 h-100 object-fit-cover">
+						</form>
+
+					</div>
 
 				</div>
 			</div>
@@ -115,57 +118,61 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
-			<!-- DADOS -->
+		<!-- DADOS -->
+		<div class="row align-items-center d-flex justify-content-center mt-3">
+
 			<div class="col-12 col-md-9">
 
 				<!-- NOME -->
-				<div class="row mb-2 g-0 align-items-stretch">
-					<div class="col-10">
-						<div
-							class="bg-secondary-subtle rounded-start-pill p-2 d-flex align-items-center h-100">
-							<span class="fw-bold"> Nome: <span id="nome"
-								class="fw-bolder"></span>
-							</span>
-						</div>
+				<div
+					class="row mb-3 g-0 align-items-stretch d-flex justify-content-center">
+					<div class="col-9 col-md-7">
+
+						<form
+							class="bg-secondary-subtle rounded-pill p-3 d-flex align-items-center h-100">
+							<span class="fw-bold me-1 mb-0 text-nowrap"> Nome:</span> <input
+								type="text" id="nome"
+								class="form-control border-0 bg-transparent fw-bolder p-0 flex-grow-1">
+						</form>
+
 					</div>
-					<div class="col-2 d-flex">
-						<button type="button"
-							class="btn bg-dark-subtle w-100 h-100 rounded-end-pill editarNomeButton">
-							<i class="bi bi-pencil"></i>
-						</button>
+
+				</div>
+
+				<div
+					class="row mb-3 g-0 align-items-stretch d-flex justify-content-center">
+					<div class="col-9 col-md-7">
+
+						<form
+							class="bg-secondary-subtle rounded-pill p-3 d-flex align-items-center h-100">
+							<span class="fw-bold me-1 mb-0 text-nowrap"> Nome de
+								usuário:</span> <input type="text" id="username"
+								class="form-control border-0 bg-transparent fw-bolder p-0 flex-grow-1">
+						</form>
+
 					</div>
 				</div>
 
-				<!-- USERNAME -->
-								<div class="row mb-2 g-0 align-items-stretch">
-					<div class="col-10">
-						<div
-							class="bg-secondary-subtle rounded-start-pill p-2 d-flex align-items-center h-100">
-							<span class="fw-bold"> Nome de usuário: <span id="username"
-								class="fw-bolder"></span>
-							</span>
-						</div>
-					</div>
-					<div class="col-2 d-flex">
-						<button type="button"
-							class="btn bg-dark-subtle w-100 h-100 rounded-end-pill editarUsernameButton">
+				<div class="row mb-3 justify-content-center">
+					<div class="col-4 col-md-2 d-flex align-items-center">
+						<button type="button" class="btn bg-dark-subtle w-100 rounded-pill editarUsernameButton">Atualizar
 							<i class="bi bi-pencil"></i>
 						</button>
 					</div>
 				</div>
 
 				<!-- DATA -->
-				<div class="row">
-					<div class="col-12 col-md-6">
+				<div class="row d-flex justify-content-center">
+					<div class="col-7 col-md-5">
 						<div class="bg-secondary-subtle rounded-pill p-2">
-							<span class="fw-bold"> Entrou em: <span id="data"
+							<span class="fw-bold ms-2"> Entrou em: <span id="data"
 								class="fw-bolder"></span>
 							</span>
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
@@ -200,7 +207,7 @@
 		crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script src="${pageContext.request.contextPath}/scripts/perfil.js"></script>
-	<script src="${pageContext.request.contextPath}/scripts/canvas.js"></script>
-
+	<script
+		src="${pageContext.request.contextPath}/scripts/editarPerfil.js"></script>
 </body>
 </html>

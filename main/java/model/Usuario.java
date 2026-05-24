@@ -1,10 +1,14 @@
 package model;
 
+import java.sql.Timestamp;
+
 public class Usuario {
 	private String nome;
 	private String username;
 	private String foto;
 	private int idUsuario;
+	private Timestamp data;
+
 
 	public String getFoto() {
 		return foto;
@@ -35,5 +39,11 @@ public class Usuario {
 	}
 	public void setImagem(String imagem) {
 		this.foto = imagem;
+	}
+	public Timestamp getData() {
+		return data;
+	}
+	public void setData(Timestamp data) {
+		this.data = data;
 	}
 }

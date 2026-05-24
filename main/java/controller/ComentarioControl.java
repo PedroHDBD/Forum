@@ -46,10 +46,25 @@ public class ComentarioControl extends HttpServlet {
 			String idPublicacao = request.getParameter("idPublicacao");
 			DBQuery db = new DBQuery();
 
-			String sql = "SELECT c.idComentario, c.idPublicacao, c.idUsuario, c.texto, c.data, c.numLikes, "
-					+ "u.idUsuario AS idUsuarioUsuario, u.username, u.foto " + "FROM Comentario c "
-					+ "JOIN Usuario u ON c.idUsuario = u.idUsuario " + "WHERE c.idPublicacao = " + idPublicacao + " "
-					+ "ORDER BY c.data ASC";
+			int limit = 5;
+			int offset = 0;
+
+			try {
+				limit = Integer.parseInt(request.getParameter("limit"));
+				offset = Integer.parseInt(request.getParameter("offset"));
+			} catch (Exception e) {
+			}
+
+			String sql =
+				"SELECT c.idComentario, c.idPublicacao, c.idUsuario, " +
+				"c.texto, c.data, c.numLikes, " +
+				"u.idUsuario AS idUsuarioUsuario, " +
+				"u.username, u.foto " +
+				"FROM Comentario c " +
+				"JOIN Usuario u ON c.idUsuario = u.idUsuario " +
+				"WHERE c.idPublicacao = " + idPublicacao + " " +
+				"ORDER BY c.data ASC " +
+				"LIMIT " + limit + " OFFSET " + offset;
 
 			ResultSet rs = db.query(sql);
 
